@@ -1,5 +1,5 @@
 /*!
- * File:     core/uid.js
+ * File:     /uid-e_v1/12-1_base/uid.js
  * Project:  Understanding Infection Dynamics · Infektionsdynamiken verstehen
  * Type:     Open Educational Resource (OER)
  * Authors:  B. D. Rausch · A. Heinz

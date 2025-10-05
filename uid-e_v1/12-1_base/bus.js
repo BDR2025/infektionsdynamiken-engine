@@ -1,7 +1,7 @@
 /*!
- * File:     core/bus.js
+ * File:     /uid-e_v1/12-1_base/bus.js
  * Project:  Understanding Infection Dynamics · Infektionsdynamiken verstehen
- * Type:     Open Educational Resource (OER)
+ * Type:     Open Educational Resource (OER) · JS (non-ESM)
  * Authors:  B. D. Rausch · A. Heinz
  * Contact:  info@infectiondynamics.eu · info@infektionsdynamiken.de
  * License:  CC BY 4.0
