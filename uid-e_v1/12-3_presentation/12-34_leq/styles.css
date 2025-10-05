@@ -1,0 +1,108 @@
+/*!
+ * File:      styles.css
+ * Project:   UID-Explore · Living Equation
+ * Type:      Bare CEQ Styles (Grid · Balance · Token colors)
+ * License:   CC BY 4.0
+ */
+
+/* ---------- CEQ Root ---------- */
+#core-equation{
+  /* Größen & Tonung als Tokens (anpassbar) */
+  --leq-size-left:  .96em;
+  --leq-size-mid:   .965em;
+  --leq-size-right: .93em;
+
+  --leq-left-op: .92;
+  --leq-sym-op:  .94;
+  --leq-num-op:  .94;
+
+  /* Center-Lock Breite (wird von view.js gesetzt) */
+  --wRightMax: auto;
+}
+
+#core-equation .ceq{
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--c-fg, #e8eef7);
+  padding: clamp(8px, 1.2vw, 16px) clamp(8px, 1.4vw, 18px) 0;
+}
+
+/* ---------- Triple als Grid (Balance) ---------- */
+#core-equation .eq-triple{
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) minmax(0,1fr);
+  grid-auto-rows: auto;
+  align-items: start;
+  column-gap: clamp(16px, 2.2vw, 32px);
+  row-gap: clamp(6px, 1.2vw, 12px);
+}
+
+/* „=“ mittig */
+#core-equation .eq-sign{ justify-self:center; align-self:center; padding:2px; opacity:.9; }
+
+/* linke Klammer nicht „angelehnt“ */
+#core-equation .block-left{ margin-top: 6px; }
+
+/* Center-Lock: rechte Klammer zentriert mit fixer Breite */
+#core-equation .block-right{
+  width: var(--wRightMax);
+  min-width: var(--wRightMax);
+  max-width: var(--wRightMax);
+  justify-self: center;
+  text-align: center;
+}
+
+/* ---------- Token-Farben (strict) ---------- */
+#core-equation .term.term-beta  { color: var(--c-i) !important; }
+#core-equation .term.term-sigma { color: var(--c-e) !important; }
+#core-equation .term.term-gamma { color: var(--c-r) !important; }
+
+/* Weiß/Fett via Klasse am Host */
+#core-equation.is-white .term { color: var(--c-fg, #e8eef7); }
+#core-equation.is-bold  .term { font-weight: 600; }
+
+/* ---------- Größen & Tonung je Block ---------- */
+#core-equation .block-left  mjx-container { font-size: var(--leq-size-left);  opacity: var(--leq-left-op); }
+#core-equation .block-mid   mjx-container { font-size: var(--leq-size-mid);   opacity: var(--leq-sym-op);  }
+#core-equation .block-right mjx-container { font-size: var(--leq-size-right); opacity: var(--leq-num-op);  }
+
+/* ---------- Numeric Stabilizer ---------- */
+#core-equation .num,
+#core-equation .coef,
+#core-equation .slot{
+  font-family: var(--font-num, var(--font-ui, Inter, "SF Pro Text", "Segoe UI", Roboto, Arial, sans-serif)) !important;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+  letter-spacing: .01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#core-equation .num.num-Z { display:inline-block; min-width: var(--wNum,  auto); text-align:right; }
+#core-equation .num.num-N { display:inline-block; min-width: var(--wDen,  auto); text-align:right; }
+#core-equation .coef      { display:inline-block; min-width: var(--wCoef, auto); text-align:right; }
+
+/* Row-Minwidth-Locks (für rechts) */
+#core-equation .row { display:inline-block; }
+
+/* ---------- Didaktik-Platzhalter (für spätere Effekte) ---------- */
+#core-equation.did-0 .term { text-shadow:none; }
+#core-equation.did-1 .term {}
+#core-equation.did-2 .term {}
+#core-equation.did-3 .term {}
+
+/* ---------- Responsive (≤860px) ---------- */
+@media (max-width: 860px){
+  #core-equation .ceq{ font-size:.98rem; padding: 10px 10px 0; }
+  #core-equation .eq-triple{
+    grid-template-columns: minmax(0,1fr);
+    grid-auto-rows: auto;
+    row-gap: 12px;
+  }
+  /* Reihenfolge: Mid → "=" → Right → "=" → Left */
+  #core-equation .block-mid   { order: 1; justify-self:center; }
+  #core-equation .eq-sign:nth-of-type(1){ order: 2; }
+  #core-equation .block-right { order: 3; justify-self:center; }
+  #core-equation .eq-sign:nth-of-type(2){ order: 4; }
+  #core-equation .block-left  { order: 5; justify-self:center; }
+}

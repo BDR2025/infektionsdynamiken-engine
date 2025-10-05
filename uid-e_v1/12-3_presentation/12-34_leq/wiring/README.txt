@@ -1,0 +1,7 @@
+Wiring im Detail
+
+Wiring ist die Verbindungsschicht zwischen Simulation und Darstellung. Hier laufen die Ereignisse des Systems zusammen und werden so aufbereitet, dass die Oberfläche jederzeit im richtigen Zustand ist. Während die Engine Datenströme wie Zeitreihen, Parameteränderungen oder Playhead-Positionen erzeugt, sorgt Wiring dafür, dass diese Informationen an der richtigen Stelle ankommen.
+
+Die Schicht hört auf die Ereignisse der Simulation und schreibt die Werte in den gemeinsamen State. Von dort werden sie an die Darstellung weitergegeben, die ihrerseits ein Repaint anstößt. Auf diese Weise bleibt das Zustandsvektorrad ebenso synchron wie die Kurven im Chart oder die Decks der Kennzahlen. Da Wiring alle relevanten Ereignisse aufgreift, spielt es keine Rolle ob ein Parameter als Einzelwert, als zusammengesetztes Objekt oder über Modellwechsel gesetzt wird. Die Verbindungsschicht filtert und normalisiert die Eingaben, sodass sie einheitlich vorliegen.
+
+Wiring ist damit das unsichtbare Nervensystem der Darstellung. Es vermittelt zwischen Rechenlogik und Visualisierung, sorgt für Konsistenz und verhindert, dass sich Daten und Bilder auseinanderentwickeln. Für die Nutzenden bleibt es unsichtbar, technisch bildet es jedoch den entscheidenden Knotenpunkt, der aus vielen einzelnen Signalen einen kohärenten Fluss entstehen lässt.

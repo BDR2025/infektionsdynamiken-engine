@@ -1,0 +1,211 @@
+/*!
+ * File:      README.md
+ * Folder:    12-3_presentation/vectors/core-equation
+ * Project:   UID-Explore Presentation Layer · Vector-Tool Living Equation
+ * Type:      Notes / Overview
+ * Authors:   B. D. Rausch · A. Heinz
+ * Contact:   info@infectiondynamics.eu · info@infektionsdynamiken.de
+ * License:   CC BY 4.0
+ *
+ * Created:   2025-09-28
+ * Updated:   2025-09-28
+ * Version:   0.9.47
+ * Changelog: - Frozen baseline (flink): Freeze-Mode + rAF-Slots; tau=0.08; feed=80 ms; Pointer live
+ */
+
+# Vector-Tool Living Equation (Triple)
+
+**Triple-Form:**  
+1) links: \( \dfrac{d}{dt} \) vor dem Zustandsvektor (S,E,I,R …)  
+2) mitte: **symbolischer** großer Vektor (farbige Terme)  
+3) rechts: **numerischer** großer Vektor, identisches Layout wie (2), live mit Werten
+
+Das Widget koppelt an den UID-Explore Event-Bus (`uid:e:*`), ist modell-agnostisch (SEIR, SIR, SIS, SIRD, SIRV via **ModelSpecs**) und rendert mit **MathJax v3**.
+
+---
+
+## Features (Kurz)
+- **Freeze-Mode:** rechter Block wird **einmal** typesettet → danach nur Slot-Text (ohne Re-Typeset) → sehr flüssig.  
+- **rAF-Smoothing:** Werte laufen sichtbar **weich** (Default τ = **0.08 s**) wie bei Live-KPIs.  
+- **Vor-Kalibrierung:** misst Max-Breiten (Zähler/Nenner/Koef.) + **Line-Locks je Zeile** → kein Breiten-Pumpen.  
+- **Didaktik:** farbige Terme, Puls/Bold auf **Container-Ebene** (stabil im Play).  
+- **Model-agnostisch:** gleiche Engine, nur **ModelSpec** wechselt (SEIR, SIR, SIS, SIRD, SIRV).
+
+---
+
+## Ordner & Dateien
+core-equation/
+├─ index.js # Orchestrator: Bus, Spec, Pointer-Direct-Update, Feed (80 ms)
+├─ view.js # View: Pre-Calibrate, Freeze-Slots (rAF 60 fps), Puls-Host
+├─ scheduler.js # Throttle-Helper für den normalen Feed
+├─ format.js # Zahlformatierung (locale-aware)
+├─ contracts.js # normalizeParams, FLOW_FNS (betaSI_N, sigmaE, gammaI, …)
+├─ tex-symbolic.js # TeX: Left + Middle (symbolisch, row-Wrapper)
+├─ tex-numeric.js # TeX: Right (numerisch, identische Struktur, Klassen/Slots)
+└─ model-specs/
+├─ index.js # getSpec()
+├─ seir.js · sir.js · sis.js · sird.js · sirv.js
+
+yaml
+Code kopieren
+
+---
+
+## Einbau (Schnellstart)
+
+**1) CSS (am besten am Ende deiner globalen Styles laden):**
+```html
+<link rel="stylesheet" href="../12-3_presentation/vectors/core-equation/styles.css">
+2) MathJax v3 konfigurieren (ohne chtml.linebreaks!):
+
+html
+Code kopieren
+<script>
+  window.MathJax = {
+    loader: { load: ['[tex]/html'] },
+    tex: {
+      inlineMath: [['$','$'],['\\(','\\)']],
+      displayMath: [['\\[','\\]'], ['$$','$$']],
+      packages: {'[+]':['html']}
+    }
+  };
+</script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+3) Modul laden (auto-mount):
+
+html
+Code kopieren
+<script type="module" src="../12-3_presentation/vectors/core-equation/index.js"></script>
+Import-Map Voraussetzung (so verwendet im Projekt):
+@uid/base/ @uid/input/ @uid/pres/ @uid/support/
+
+Bus-Kopplung (sticky)
+Das Widget hört auf:
+
+uid:e:params:ready → Meta/Modell
+
+uid:e:model:update → normalisierte Parameter (β, γ, σ, μ, ν, N, …)
+
+uid:e:sim:data → Serie { t, S, E, I, R, … }
+
+uid:e:sim:pointer → { idx } (Playhead)
+
+Pointer-Events werden unthrottled verarbeitet (direkter Slot-Update für „Live“-Gefühl). Alle anderen Updates gehen über einen sanften Feed (Default 80 ms).
+
+Performance-Design
+Freeze-Mode:
+Rechte Matrix wird einmal typesettet. Danach werden nur noch Slots (Textknoten) geschrieben:
+
+0 Re-Typesets im Play
+
+rAF-Loop (60 fps): visuelles Smoothing mit 
+𝜏
+=
+0.08
+τ=0.08 s
+
+Line-Locks je Zeile + Struts in Brüchen → kein horizontales/vertikales Zittern
+
+Akzeptanzkriterien (intern):
+
+ΔW_right ≤ 3 px (typisch 0–2 px)
+
+Frac-Jitter ≤ 0.5 px
+
+Pulse-Uptime ≥ 95 % (bei aktivem Puls)
+
+Winner-Sync = 100 %
+
+ModelSpecs (Beispiele)
+SEIR
+
+states: [S,E,I,R]
+
+rows:
+S: − β·S·I/N
+E: + β·S·I/N − σ·E
+I: + σ·E − γ·I
+R: + γ·I
+
+flows: betaSI_N, sigmaE, gammaI
+
+derivTex: 
+𝛽
+=
+𝑅
+0
+𝛾
+,
+  
+𝛾
+=
+1
+/
+𝐷
+,
+  
+𝜎
+=
+1
+/
+𝐿
+,
+  
+𝑅
+e
+f
+f
+=
+𝑅
+0
+𝑆
+/
+𝑁
+β=R 
+0
+​
+ γ,γ=1/D,σ=1/L,R 
+eff
+​
+ =R 
+0
+​
+ S/N
+
+SIR / SIS / SIRD / SIRV analog; nur Spec austauschen.
+
+Konfiguration & Tuning
+Smoothing (View): setSmoothMode('off'|'normal'|'strong')
+– Default „flink“: τ = 0.08 s in view.js
+
+Feed (Index): Throttle-Intervall im Orchestrator (Default 80 ms)
+
+Pointer: unthrottled, immer direkt
+
+Optional: Einen UI-Chip „Smooth: Off / Normal / Strong“ nachrüsten (schaltet nur τ).
+
+Troubleshooting
+Rote \class{…}{…} sichtbar:
+→ MathJax [tex]/html nicht aktiv oder \[...\] nicht in displayMath. Fix: Config oben exakt übernehmen.
+
+„Invalid option linebreaks“:
+→ chtml.linebreaks nicht in v3 benutzen. Entfernen.
+
+Puls stoppt beim Play:
+→ Stelle sicher, dass Puls-Klassen auf Container (block-mid / block-right) liegen, nicht auf dynamischen MJX-Nodes.
+
+Zahlen ruckeln / treppen:
+→ Feed auf 60–80 ms, τ auf 0.08 s. Pointer ist live. (Freeze-Mode muss aktiv sein.)
+
+Nur ein Teil bewegt sich:
+→ Prüfe, ob alle Slot-Instanzen gesetzt werden (querySelectorAll statt querySelector). In view.js (≥ v4.6.0) ist das behoben.
+
+Dev-Diagnostik (optional)
+EQ-Probe (Jitter, Typeset/s): zeigt ΔW/ΔX rechts, Frac-Jitter, Pulse-Uptime, Winner-Sync.
+
+Slot-Probe: misst pro Slot (β,γ,σ,μ,ν,S,E,I,N) nodes & updates/s → erkennt, wenn Instanzen stehen bleiben.
+
+Die Snippets liegen in den internen Dev-Notizen; bei Bedarf integrieren (HUD mit Stop+Download).
+
+Lizenz
+CC BY 4.0 – Bitte Quelle nennen: UID-Explore Presentation Layer · Vector-Tool Living Equation.

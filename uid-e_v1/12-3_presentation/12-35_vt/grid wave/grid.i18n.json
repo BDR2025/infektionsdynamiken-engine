@@ -1,0 +1,146 @@
+{
+  "de": {
+    "buttons": {
+      "mode": "Modus",
+      "on": "Ein",
+      "off": "Aus",
+      "info": "Info"
+    },
+    "school": {
+      "info": {
+        "title": "GridWave",
+        "what": "GridWave zeigt die Größe der Zustände S, E, I, R, D und V als Punkte. Jeder Punkt repräsentiert denselben Bevölkerungsanteil. Mehr Punkte in einer Farbe bedeuten einen größeren Anteil.",
+        "modes": {
+          "proportional": "Füllt zeilenweise ab links oben. Gut für einfache Flächenvergleiche.",
+          "wave": "Beginnt in der Mitte und füllt konzentrisch nach außen. Erzeugt ein intuitives Wellenbild.",
+          "cluster": "Bildet kleine Flecken (Cluster). Macht Ansammlungen schnell erkennbar.",
+          "hybrid": "Mischt Welle im Zentrum mit Flecken in der Peripherie. Parameter d0/p steuern die Gewichtung."
+        },
+        "colors": {
+          "S": "S empfänglich",
+          "E": "E exponiert",
+          "I": "I infiziert",
+          "R": "R genesen",
+          "D": "D verstorben",
+          "V": "V geimpft"
+        },
+        "tips": [
+          "Bewege den Zeitzeiger im Chart: Die Punkte aktualisieren sich sofort.",
+          "Schalte Linien in der Legende ein/aus: Die Punkte folgen denselben Daten.",
+          "Bei SEIR/SEIRVD kommt E als gelbe Punkte hinzu (Latenz vor Ansteckung).",
+          "V wird als äußerer Ring gezeichnet; D bildet einen stabilen Kern im Inneren.",
+          "Vergleiche die Modi, um dieselben Anteile aus unterschiedlichen Blickwinkeln zu sehen."
+        ],
+        "donts": [
+          "Dies ist keine Landkarte. Positionen sind didaktisch, nicht geografisch.",
+          "Abstände zwischen Punkten bedeuten keine Kontakte oder Wege.",
+          "Keine Einzelpersonen ablesen – dargestellt werden Anteile."
+        ],
+        "note": "Didaktische Visualisierung von Zustandsanteilen. Keine räumliche Simulation und kein Ersatz für agentenbasierte Modelle."
+      }
+    },
+    "university": {
+      "info": {
+        "title": "GridWave Visualisierung",
+        "what": "Visualisiert Anteile S, E, I, R, D, V als diskrete Punkte (N_vis = grid²). Die Punktzahl pro Farbe ist proportional zum Anteil p_k. Die Füllreihenfolge entsteht aus einer modus­spezifischen Metrik und deren Ranking.",
+        "modes": {
+          "proportional": "Lineare Reihenfolge (Zeilen-Scan). Referenzlayout für absolute Vergleiche.",
+          "wave": "Radiale Metrik r = dist((x,y), center). Eignet sich, um Peak-Übergänge als Wellenfront zu vermitteln.",
+          "cluster": "Geglättetes Rauschfeld als Metrik. Fördert Musterwahrnehmung durch Fleckenbildung.",
+          "hybrid": "Interpolation: radial nahe dem Zentrum, clusterartig in der Peripherie. d0/p bestimmen die Gewichtung."
+        },
+        "colors": {
+          "S": "S susceptible (empfänglich)",
+          "E": "E exposed (exponiert)",
+          "I": "I infectious (infiziert)",
+          "R": "R recovered (genesen)",
+          "D": "D deceased (verstorben)",
+          "V": "V vaccinated (geimpft)"
+        },
+        "assumptions": [
+          "Anteile sind auf 1 normiert; Diskretisierung erfolgt durch Rundung auf Rasterzellen.",
+          "D wird als innerer Kern, V als äußerer Ring ohne Überdeckung der inneren Bänder gezeichnet.",
+          "Keine räumliche Semantik: Positionen dienen der Wahrnehmung, nicht der Geografie.",
+          "Der Zeitindex folgt dem Playhead; Pointer-Updates lösen reines Re-Rendering aus."
+        ],
+        "limitations": [
+          "Kein Kontaktgraph: keine Wege, kein physikalischer Cluster-Prozess.",
+          "Sehr kleine Anteile werden durch Rundung sichtbar quantisiert."
+        ],
+        "note": "Leichtgewichtige, didaktische Projektion von Zustandsanteilen – geeignet für Musterintuition und Modusvergleich."
+      }
+    }
+  },
+  "en": {
+    "buttons": {
+      "mode": "Mode",
+      "on": "On",
+      "off": "Off",
+      "info": "Info"
+    },
+    "school": {
+      "info": {
+        "title": "GridWave",
+        "what": "GridWave visualizes the sizes of states S, E, I, R, D and V as dots. Each dot represents the same fraction of the population. More dots of a color indicate a larger share.",
+        "modes": {
+          "proportional": "Fills row by row from the top-left. Good for simple area comparisons.",
+          "wave": "Starts in the center and fills outward in concentric rings. Intuitive wave impression.",
+          "cluster": "Forms small patches (clusters). Makes groupings easy to spot.",
+          "hybrid": "Blends a central wave with peripheral patches. d0/p control the weighting."
+        },
+        "colors": {
+          "S": "S susceptible",
+          "E": "E exposed",
+          "I": "I infectious",
+          "R": "R recovered",
+          "D": "D deceased",
+          "V": "V vaccinated"
+        },
+        "tips": [
+          "Move the chart’s time pointer; dots update instantly.",
+          "Toggle legend lines; dots follow the same data.",
+          "With SEIR/SEIRVD, E appears in yellow to show latency before infectiousness.",
+          "V is drawn as an outer ring; D forms a stable core in the center.",
+          "Compare modes to see the same proportions from different perspectives."
+        ],
+        "donts": [
+          "This is not a map. Positions are didactic, not geographic.",
+          "Distances between dots do not represent contacts or routes.",
+          "Do not infer individuals—dots depict proportions."
+        ],
+        "note": "Educational visualization of state shares. Not a spatial simulation and not a substitute for agent-based models."
+      }
+    },
+    "university": {
+      "info": {
+        "title": "GridWave Visualization",
+        "what": "Renders shares S, E, I, R, D, V as discrete dots (N_vis = grid²). Dot counts per color are proportional to p_k. The fill order is defined by a mode-specific metric and its ranking.",
+        "modes": {
+          "proportional": "Linear sequence (row scan). Reference layout for absolute comparisons.",
+          "wave": "Radial metric r = dist((x,y), center). Useful to convey peak transitions as a traveling wave.",
+          "cluster": "Smoothed noise field as metric. Encourages pattern perception via patch formation.",
+          "hybrid": "Interpolation: radial near the center, clustered in the periphery. d0/p control the weighting."
+        },
+        "colors": {
+          "S": "S susceptible",
+          "E": "E exposed",
+          "I": "I infectious",
+          "R": "R recovered",
+          "D": "D deceased",
+          "V": "V vaccinated"
+        },
+        "assumptions": [
+          "Shares are normalized to 1; discretization arises from rounding to grid cells.",
+          "D is rendered as an inner core; V as an outer ring without overlapping inner bands.",
+          "No spatial semantics: positions are for perception, not geography.",
+          "Time index follows the playhead; pointer updates only trigger re-rendering."
+        ],
+        "limitations": [
+          "No contact graph: no routes and no physical clustering dynamics.",
+          "Very small shares may appear quantized due to rounding."
+        ],
+        "note": "Lightweight educational projection of state shares—useful for building intuition and comparing modes."
+      }
+    }
+  }
+}

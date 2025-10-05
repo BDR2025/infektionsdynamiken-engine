@@ -1,0 +1,7 @@
+Core im Detail
+
+Der Kern ist die zeichnende Instanz des Zustandsvektorrads. Er nimmt die vorbereiteten Daten entgegen und verwandelt sie in eine visuelle Darstellung, die auf dem Canvas erscheint. Hier entstehen der farbige Ring der Kompartimente, die Nadeln der Modellparameter, der Reff-Zeiger und die kleine Scheibe mit der Zeitangabe. Jede Form wird präzise berechnet, auf ihre Position gesetzt und im richtigen Verhältnis zueinander dargestellt.
+
+Im Kern steckt die gesamte Logik für Maße, Farben und Abhängigkeiten. Er kennt die Skala der Parameter und übersetzt sie in sichtbare Unterschiede von Länge und Stärke der Nadeln. Er berechnet die Position des Reff-Zeigers, sorgt für den Farbwechsel bei kritischen Werten und platziert die Symbole der Parameter so, dass sie erkennbar und nicht störend wirken. Auch die Mini-Disc wird hier vermessen, damit sie genau so groß ist wie nötig und den Zeigerfuß sauber verdeckt.
+
+Der Kern arbeitet eng mit der Verbindungsschicht zusammen. Er selbst hört nicht auf Ereignisse, sondern verlässt sich darauf, dass ihm die richtigen Daten geliefert werden. Seine Aufgabe ist es, die Inhalte zuverlässig und wiederholbar zu zeichnen. So wird aus abstrakten Zahlen ein klarer visueller Eindruck, der für Lernende ebenso verständlich ist wie für Fachleute. Der Kern ist damit das visuelle Herz des Zustandsvektorrads und sorgt dafür, dass jede Simulation ein präzises und anschauliches Bild bekommt.
