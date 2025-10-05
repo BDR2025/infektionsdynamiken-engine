@@ -1,0 +1,47 @@
+:root{
+  --chart-bg:#0e1116;
+  --c-s:#22c55e; /* S */
+  --c-e:#a855f7; /* E (SEIR) – fallback */
+  --c-i:#ef4444; /* I */
+  --c-r:#3b82f6; /* R */
+}
+
+/* Legend – minimal, nur Halo-Dots */
+.uid-legend {
+  display: flex;
+  gap: 10px;
+  padding-top: 6px;
+  align-items: center;
+}
+
+.uid-legend .legend-dot {
+  /* harter Reset gegen globale Button-Styles */
+  all: unset;
+  box-sizing: border-box;
+
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  background: currentColor;   /* Punkt = an */
+  cursor: pointer;
+  opacity: .95;
+}
+
+.uid-legend .legend-dot.is-off {
+  background: transparent;    /* Ring = aus */
+  opacity: .55;
+}
+
+.uid-legend .legend-dot:focus-visible {
+  outline: 2px solid var(--brand, #4fd1c5);
+  outline-offset: 2px;
+}
+
+/* KPI Dimming */
+.kpi-card.is-dim {
+  opacity: .35;
+  filter: saturate(.6);
+}
+
