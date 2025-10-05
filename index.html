@@ -1,1 +1,132 @@
+<!doctype html>
+<html lang="de" data-mode="university" data-model="SEIR" data-app="uid-engine">
+  <!--
+    File:      index.html
+    Project:   Understanding Infection Dynamics · UID-Engine
+    Role:      Einstiegspunkt (App-Shell) mit externer Import-Map & Orchestrator
+    License:   CC BY 4.0
 
+    Updated:   2025-10-05
+    Version:   1.4.2
+    Changelog:
+      - v1.4.2  MathJax: nur Preloads (uid-mathjax.js, tex-chtml-full.js); kein direkter Loader im <head>.
+      - v1.4.1  MathJax-Readiness: Preloads ergänzt.
+      - v1.4.0  Widget-Hosts ergänzt (chart/kpi/gridwave/state visuals/params/formulas/leq).
+      - v1.3.0  Import-Map in <head> + Preloads + Favicon-Stub.
+  -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UID-Engine</title>
+
+    <!-- Import-Map muss vor dem ersten Module-Script geparst sein -->
+    <script type="importmap" src="/uid-e_v1/importmap.json"></script>
+
+    <!-- Preloads: Hot-Path-Module & MathJax (lokal, performance-first) -->
+    <link rel="modulepreload" href="/uid-e_v1/12-4_support/12-41_boot/index.js" />
+    <link rel="modulepreload" href="/uid-e_v1/12-1_base/index.js" />
+    <!-- MathJax-Wrapper (ESM) – wird von Modulen importiert (z. B. params.formulas.js) -->
+    <link rel="modulepreload" href="/uid-e_v1/12-4_support/12-44_js/uid-mathjax.js" />
+    <!-- Aggregator-Build, klassisches Script – vom Wrapper dynamisch geladen -->
+    <link rel="preload" as="script" href="/uid-e_v1/12-4_support/12-44_js/tex-chtml-full.js" />
+
+    <!-- Favicon-Stub (unterdrückt 404) -->
+    <link rel="icon" href="data:,">
+  </head>
+  <body>
+    <main id="app">
+
+      <!-- PARAMS (klassisch) -->
+      <section id="app-params" data-widget="params" data-widget-enabled="true">
+        <article id="params-widget" class="widget">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="params-host" aria-label="Parameter (klassisch)"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- KPI (kompartimente + live) -->
+      <section id="app-kpi" data-widget="kpi" data-widget-enabled="true">
+        <article id="kpi-widget" class="widget widget-kpi">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="kpi-comp" class="kpi-deck" aria-label="KPIs (Kompartimente)"></div>
+            <div id="kpi-live" class="kpi-deck" aria-label="KPIs (live)"></div>
+          </div>
+        </article>
+
+        <!-- Key KPIs (statisch) -->
+        <article id="kpi-static-widget" class="widget">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="kpi-static" class="kpi-deck" aria-label="KPIs (static)"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- CHART -->
+      <section id="app-chart" data-widget="chart" data-widget-enabled="true">
+        <article id="chart-widget" class="widget widget-chart">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="chart-host" aria-label="Chart"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- PARAMS (Formeln) -->
+      <section id="app-formulas" data-widget="formulas" data-widget-enabled="true">
+        <article id="params-formulas-widget" class="widget"
+                 data-pt-compact="1"
+                 data-pt-flat="1"
+                 data-pt-show-sigma="auto"
+                 data-pt-order="D,R0,beta,gamma,sigma,beta_eff,R_eff_t,R_eff_0">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="params-formulas-host" aria-label="Parameter (Formeln)"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- LEQ (Living Equation) -->
+      <section id="app-leq" data-widget="leq" data-widget-enabled="true">
+        <article id="core-equation-widget" class="widget">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="core-equation" data-widget-id="core-equation"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- VISUAL TOOLS (State Visuals + GridWave) -->
+      <section id="app-vt" data-widget="vt" data-widget-enabled="true">
+        <!-- State Visuals -->
+        <article id="sv-widget" class="widget">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
+            <!-- Legacy-Host aus Demo2 (optional, falls alte Module ihn suchen): -->
+            <div id="vt-host" class="square-host" hidden></div>
+          </div>
+        </article>
+
+        <!-- GridWave -->
+        <article id="gw-widget" class="widget">
+          <header class="widget-header"></header>
+          <div class="widget-body">
+            <div id="gw-host" class="square-host" aria-label="GridWave">
+              <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+    </main>
+
+    <noscript>Für die UID-Engine ist JavaScript erforderlich. Bitte JS aktivieren.</noscript>
+
+    <!-- Einziger Startpunkt -->
+    <script type="module" src="/uid-e_v1/orchestrator.js"></script>
+  </body>
+</html>

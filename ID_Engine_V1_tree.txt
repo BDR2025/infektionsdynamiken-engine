@@ -1,0 +1,673 @@
+ID_Engine_V1/
+├── ID Engine V1/
+│   ├── .DS_Store
+│   ├── index.html
+│   └── uid-e_v1/
+│       ├── .DS_Store
+│       ├── importmap.json
+│       ├── orchestrator.js
+│       ├── 12-1_base/
+│       │   ├── .DS_Store
+│       │   ├── bus.js
+│       │   ├── engine.js
+│       │   ├── index.js
+│       │   ├── schema.js
+│       │   ├── uid.js
+│       ├── 12-2_input/
+│       │   ├── .DS_Store
+│       │   └── 12-21_para/
+│       │       ├── .DS_Store
+│       │       ├── bridge.js
+│       │       ├── index.js
+│       │       ├── pt.widget-actions.js
+│       │       ├── tabs.js
+│       │       ├── controls/
+│       │       │   ├── .DS_Store
+│       │       │   ├── config.js
+│       │       │   ├── dom.rows.js
+│       │       │   ├── events.js
+│       │       │   ├── format.js
+│       │       │   ├── index.js
+│       │       │   ├── runtime.js
+│       │       │   ├── sliders.js
+│       │       │   ├── styles.js
+│       │       └── formulas/
+│       │           ├── compat.runtime.js
+│       │           ├── config.js
+│       │           ├── dom.js
+│       │           ├── events.js
+│       │           ├── index.js
+│       │           ├── initial.js
+│       │           ├── math.js
+│       │           ├── runtime.js
+│       │           ├── styles.js
+│       │           ├── templates.js
+│       ├── 12-3_presentation/
+│       │   ├── .DS_Store
+│       │   ├── 12-31_chart/
+│       │   │   ├── .DS_Store
+│       │   │   ├── index.js
+│       │   │   ├── overlay.ui.js
+│       │   │   ├── core/
+│       │   │   │   ├── chart-renderer.js
+│       │   │   ├── css/
+│       │   │   │   ├── chart.css
+│       │   │   ├── interaction/
+│       │   │   │   ├── auto-play.js
+│       │   │   │   ├── legend.js
+│       │   │   │   ├── lines.js
+│       │   │   │   ├── markers.js
+│       │   │   │   ├── overlays-toggle.js
+│       │   │   │   ├── playhead-core.js
+│       │   │   │   ├── playhead-input.js
+│       │   │   │   ├── scale-bridge.js
+│       │   │   ├── lines/
+│       │   │   │   ├── hit.js
+│       │   │   ├── mini/
+│       │   │   │   ├── index.js
+│       │   │   ├── overlay/
+│       │   │   │   ├── hit.overlay.js
+│       │   │   │   ├── manager.js
+│       │   │   │   ├── utils.js
+│       │   │   ├── scale/
+│       │   │   │   ├── scale-adapter.js
+│       │   │   │   ├── scale-mode.js
+│       │   │   ├── tools/
+│       │   │   │   ├── ruler.js
+│       │   │   └── ui/
+│       │   │       ├── chart.sim-controls.js
+│       │   │       ├── chart.widget-actions.js
+│       │   │       ├── chart.widget-mount.js
+│       │   ├── 12-32_formula/
+│       │   │   ├── index.js
+│       │   ├── 12-33_kpi/
+│       │   │   ├── .DS_Store
+│       │   │   ├── bridge.js
+│       │   │   ├── index.js
+│       │   │   ├── keykpi.mount.js
+│       │   │   ├── keykpi.widget-actions.js
+│       │   │   ├── kpi.widget-actions.js
+│       │   │   ├── common/
+│       │   │   │   ├── .DS_Store
+│       │   │   │   ├── registry.js
+│       │   │   │   ├── tooltips.js
+│       │   │   │   ├── wiring.js
+│       │   │   │   ├── compute/
+│       │   │   │   │   ├── extras.js
+│       │   │   │   │   ├── format.js
+│       │   │   │   │   ├── helpers.js
+│       │   │   │   │   ├── index.js
+│       │   │   │   │   ├── live.js
+│       │   │   │   │   ├── static.js
+│       │   │   │   └── style/
+│       │   │   │       ├── classify.js
+│       │   │   │       ├── controller.js
+│       │   │   │       ├── css.js
+│       │   │   │       ├── icons.js
+│       │   │   │       ├── tokens.js
+│       │   │   ├── key/
+│       │   │   │   ├── .DS_Store
+│       │   │   │   ├── index.js
+│       │   │   │   ├── kpi.key.widget-actions.js
+│       │   │   │   ├── renderer.js
+│       │   │   └── live/
+│       │   │       ├── .DS_Store
+│       │   │       ├── index.js
+│       │   │       ├── kpi.live.widget-actions.js
+│       │   │       ├── view.js
+│       │   ├── 12-34_leq/
+│       │   │   ├── .DS_Store
+│       │   │   ├── README.txt
+│       │   │   ├── contracts.js
+│       │   │   ├── format.js
+│       │   │   ├── index.js
+│       │   │   ├── index_tech.txt
+│       │   │   ├── leq.plugin.js
+│       │   │   ├── leq.widget-actions.js
+│       │   │   ├── scheduler.js
+│       │   │   ├── styles.css
+│       │   │   ├── tex-numeric.js
+│       │   │   ├── tex-symbolic.js
+│       │   │   ├── view.js
+│       │   │   ├── core/
+│       │   │   │   ├── index.js
+│       │   │   ├── model-specs/
+│       │   │   │   ├── index.js
+│       │   │   │   ├── seir.js
+│       │   │   │   ├── sir.js
+│       │   │   │   ├── sird.js
+│       │   │   │   ├── sirv.js
+│       │   │   │   ├── sis.js
+│       │   │   ├── plugins/
+│       │   │   │   ├── drivers.js
+│       │   │   │   ├── flow.js
+│       │   │   │   ├── timing.js
+│       │   │   └── wiring/
+│       │   │       ├── README.txt
+│       │   │       ├── bus.js
+│       │   │       ├── index.js
+│       │   └── 12-35_vt/
+│       │       ├── .DS_Store
+│       │       ├── grid wave/
+│       │       │   ├── .DS_Store
+│       │       │   ├── UID Explore Γö¼Γòû Grid Wave.pdf
+│       │       │   ├── demo.html
+│       │       │   ├── grid.i18n.json
+│       │       │   ├── gridwave.js
+│       │       │   ├── gw.widget-actions.js
+│       │       │   ├── index.js
+│       │       │   ├── styles.css
+│       │       │   ├── v1.1.0/
+│       │       │   │   ├── demo.html
+│       │       │   │   ├── gridwave.js
+│       │       │   │   ├── index.js
+│       │       │   │   ├── styles.css
+│       │       │   └── v1.1.4/
+│       │       │       ├── demo.html
+│       │       │       ├── gridwave.js
+│       │       │       ├── index.js
+│       │       │       ├── styles.css
+│       │       ├── state visuals/
+│       │       │   ├── .DS_Store
+│       │       │   ├── display.mode.js
+│       │       │   ├── index.js
+│       │       │   ├── sim-button.play05.js
+│       │       │   ├── sv.widget-actions.js
+│       │       │   ├── square/
+│       │       │   │   ├── equations.js
+│       │       │   │   ├── index.js
+│       │       │   │   ├── hub/
+│       │       │   │   │   ├── footer.js
+│       │       │   │   │   ├── header.js
+│       │       │   │   │   ├── momentum.js
+│       │       │   │   ├── hybrid/
+│       │       │   │   │   ├── core.js
+│       │       │   │   └── math/
+│       │       │   │       ├── rates.js
+│       │       │   ├── square copy/
+│       │       │   │   ├── equations.js
+│       │       │   │   ├── hybrid.core.js
+│       │       │   │   ├── index.js
+│       │       │   └── wheel/
+│       │       │       ├── README.txt
+│       │       │       ├── angles.js
+│       │       │       ├── canvas.js
+│       │       │       ├── draw.arrows.js
+│       │       │       ├── draw.hub.js
+│       │       │       ├── draw.js
+│       │       │       ├── draw.reff.js
+│       │       │       ├── draw.segments.js
+│       │       │       ├── draw.util.js
+│       │       │       ├── index.js
+│       │       │       ├── state.js
+│       │       └── wiring/
+│       │           ├── .DS_Store
+│       │           ├── index.js
+│       └── 12-4_support/
+│           ├── .DS_Store
+│           ├── 12-41_boot/
+│           │   ├── .DS_Store
+│           │   ├── README.txt
+│           │   ├── index.js
+│           │   ├── boot/
+│           │   │   ├── bridge.js
+│           │   ├── engine/
+│           │   │   ├── .DS_Store
+│           │   │   ├── boot-engine.js
+│           │   │   ├── index.js
+│           │   ├── infra/
+│           │   │   ├── .DS_Store
+│           │   │   ├── pointer-bridge.boot.js
+│           │   │   ├── pointer-bridge.js
+│           │   │   ├── sim-bridge.boot.js
+│           │   │   ├── sim-bridge.js
+│           │   ├── mount/
+│           │   │   ├── .DS_Store
+│           │   │   ├── chart.js
+│           │   │   ├── gridwave.js
+│           │   │   ├── index.js
+│           │   │   ├── kpi.key.js
+│           │   │   ├── kpi.live.js
+│           │   │   ├── leq.js
+│           │   │   ├── params.classic.js
+│           │   │   ├── params.formulas.js
+│           │   │   ├── state.visuals.js
+│           │   ├── rehydrate/
+│           │   │   ├── .DS_Store
+│           │   │   ├── core.js
+│           │   ├── shims/
+│           │   │   ├── leq.actions.js
+│           │   │   ├── leq.index.js
+│           │   └── tooltips/
+│           │       ├── .DS_Store
+│           │       ├── boot.js
+│           │       ├── index.js
+│           │       ├── tips.js
+│           │       ├── tooltip.js
+│           ├── 12-42_widgets/
+│           │   ├── .DS_Store
+│           │   ├── actions.js
+│           │   ├── contracts.js
+│           │   ├── example.widget-actions.js
+│           │   ├── header.js
+│           │   ├── header.tools.js
+│           │   ├── hub.js
+│           │   ├── index.js
+│           │   ├── measure.js
+│           │   ├── off-policy.js
+│           │   ├── registry.js
+│           │   ├── rehydrate.js
+│           │   ├── styles.js
+│           │   ├── tips.js
+│           │   ├── tooltip.js
+│           │   └── render/
+│           │       ├── button.js
+│           │       ├── dropdown.js
+│           │       ├── multitoggle.js
+│           │       ├── segmented.js
+│           │       ├── toggle.js
+│           ├── 12-43_css/
+│           │   ├── _kpi.css
+│           │   ├── demo2.css
+│           │   ├── themes-school.css
+│           │   ├── themes-university.css
+│           │   ├── tokens.css
+│           │   ├── uid-core.css
+│           │   ├── uid-widgets-collapse.css
+│           ├── 12-44_js/
+│           │   ├── .DS_Store
+│           │   ├── es-module-shims.min.js
+│           │   ├── package-lock.json
+│           │   ├── package.json
+│           │   ├── tex-chtml-full.js
+│           │   ├── tex-chtml.js
+│           │   ├── uid-mathjax-lib.js
+│           │   ├── uid-mathjax.js
+│           │   ├── uid-mj-entry.js
+│           │   └── output/
+│           │       ├── .DS_Store
+│           │       └── chtml/
+│           │           ├── .DS_Store
+│           │           └── fonts/
+│           │               ├── .DS_Store
+│           │               └── woff-v2/
+│           │                   ├── MathJax_AMS-Regular.woff
+│           │                   ├── MathJax_Calligraphic-Bold.woff
+│           │                   ├── MathJax_Calligraphic-Regular.woff
+│           │                   ├── MathJax_Fraktur-Bold.woff
+│           │                   ├── MathJax_Fraktur-Regular.woff
+│           │                   ├── MathJax_Main-Bold.woff
+│           │                   ├── MathJax_Main-Italic.woff
+│           │                   ├── MathJax_Main-Regular.woff
+│           │                   ├── MathJax_Math-BoldItalic.woff
+│           │                   ├── MathJax_Math-Italic.woff
+│           │                   ├── MathJax_Math-Regular.woff
+│           │                   ├── MathJax_SansSerif-Bold.woff
+│           │                   ├── MathJax_SansSerif-Italic.woff
+│           │                   ├── MathJax_SansSerif-Regular.woff
+│           │                   ├── MathJax_Script-Regular.woff
+│           │                   ├── MathJax_Size1-Regular.woff
+│           │                   ├── MathJax_Size2-Regular.woff
+│           │                   ├── MathJax_Size3-Regular.woff
+│           │                   ├── MathJax_Size4-Regular.woff
+│           │                   ├── MathJax_Typewriter-Regular.woff
+│           │                   ├── MathJax_Vector-Bold.woff
+│           │                   ├── MathJax_Vector-Regular.woff
+│           │                   ├── MathJax_Zero.woff
+│           │                   ├── manifest.txt
+│           └── 12-45_i18n/
+│               ├── de.json
+│               ├── en.json
+└── __MACOSX/
+    ├── ._ID Engine V1
+    └── ID Engine V1/
+        ├── ._.DS_Store
+        ├── ._index.html
+        ├── ._uid-e_v1
+        └── uid-e_v1/
+            ├── ._.DS_Store
+            ├── ._12-1_base
+            ├── ._12-2_input
+            ├── ._12-3_presentation
+            ├── ._12-4_support
+            ├── ._importmap.json
+            ├── ._orchestrator.js
+            ├── 12-1_base/
+            │   ├── ._.DS_Store
+            │   ├── ._bus.js
+            │   ├── ._engine.js
+            │   ├── ._index.js
+            │   ├── ._schema.js
+            │   ├── ._uid.js
+            ├── 12-2_input/
+            │   ├── ._.DS_Store
+            │   ├── ._12-21_para
+            │   └── 12-21_para/
+            │       ├── ._.DS_Store
+            │       ├── ._bridge.js
+            │       ├── ._controls
+            │       ├── ._formulas
+            │       ├── ._index.js
+            │       ├── ._pt.widget-actions.js
+            │       ├── ._tabs.js
+            │       ├── controls/
+            │       │   ├── ._.DS_Store
+            │       │   ├── ._config.js
+            │       │   ├── ._dom.rows.js
+            │       │   ├── ._events.js
+            │       │   ├── ._format.js
+            │       │   ├── ._index.js
+            │       │   ├── ._runtime.js
+            │       │   ├── ._sliders.js
+            │       │   ├── ._styles.js
+            │       └── formulas/
+            │           ├── ._compat.runtime.js
+            │           ├── ._config.js
+            │           ├── ._dom.js
+            │           ├── ._events.js
+            │           ├── ._index.js
+            │           ├── ._initial.js
+            │           ├── ._math.js
+            │           ├── ._runtime.js
+            │           ├── ._styles.js
+            │           ├── ._templates.js
+            ├── 12-3_presentation/
+            │   ├── ._.DS_Store
+            │   ├── ._12-31_chart
+            │   ├── ._12-32_formula
+            │   ├── ._12-33_kpi
+            │   ├── ._12-34_leq
+            │   ├── ._12-35_vt
+            │   ├── 12-31_chart/
+            │   │   ├── ._.DS_Store
+            │   │   ├── ._core
+            │   │   ├── ._css
+            │   │   ├── ._demo
+            │   │   ├── ._index.js
+            │   │   ├── ._interaction
+            │   │   ├── ._lines
+            │   │   ├── ._mini
+            │   │   ├── ._overlay
+            │   │   ├── ._overlay.ui.js
+            │   │   ├── ._scale
+            │   │   ├── ._tools
+            │   │   ├── ._ui
+            │   │   ├── core/
+            │   │   │   ├── ._chart-renderer.js
+            │   │   ├── css/
+            │   │   │   ├── ._chart.css
+            │   │   ├── interaction/
+            │   │   │   ├── ._auto-play.js
+            │   │   │   ├── ._legend.js
+            │   │   │   ├── ._lines.js
+            │   │   │   ├── ._markers.js
+            │   │   │   ├── ._overlays-toggle.js
+            │   │   │   ├── ._playhead-core.js
+            │   │   │   ├── ._playhead-input.js
+            │   │   │   ├── ._scale-bridge.js
+            │   │   ├── lines/
+            │   │   │   ├── ._hit.js
+            │   │   ├── mini/
+            │   │   │   ├── ._index.js
+            │   │   ├── overlay/
+            │   │   │   ├── ._hit.overlay.js
+            │   │   │   ├── ._manager.js
+            │   │   │   ├── ._utils.js
+            │   │   ├── scale/
+            │   │   │   ├── ._scale-adapter.js
+            │   │   │   ├── ._scale-mode.js
+            │   │   ├── tools/
+            │   │   │   ├── ._ruler.js
+            │   │   └── ui/
+            │   │       ├── ._chart.sim-controls.js
+            │   │       ├── ._chart.widget-actions.js
+            │   │       ├── ._chart.widget-mount.js
+            │   ├── 12-32_formula/
+            │   │   ├── ._index.js
+            │   ├── 12-33_kpi/
+            │   │   ├── ._.DS_Store
+            │   │   ├── ._bridge.js
+            │   │   ├── ._common
+            │   │   ├── ._index.js
+            │   │   ├── ._key
+            │   │   ├── ._keykpi.mount.js
+            │   │   ├── ._keykpi.widget-actions.js
+            │   │   ├── ._kpi.widget-actions.js
+            │   │   ├── ._live
+            │   │   ├── common/
+            │   │   │   ├── ._.DS_Store
+            │   │   │   ├── ._compute
+            │   │   │   ├── ._registry.js
+            │   │   │   ├── ._style
+            │   │   │   ├── ._tooltips.js
+            │   │   │   ├── ._wiring.js
+            │   │   │   ├── compute/
+            │   │   │   │   ├── ._extras.js
+            │   │   │   │   ├── ._format.js
+            │   │   │   │   ├── ._helpers.js
+            │   │   │   │   ├── ._index.js
+            │   │   │   │   ├── ._live.js
+            │   │   │   │   ├── ._static.js
+            │   │   │   └── style/
+            │   │   │       ├── ._classify.js
+            │   │   │       ├── ._controller.js
+            │   │   │       ├── ._css.js
+            │   │   │       ├── ._icons.js
+            │   │   │       ├── ._tokens.js
+            │   │   ├── key/
+            │   │   │   ├── ._.DS_Store
+            │   │   │   ├── ._index.js
+            │   │   │   ├── ._kpi.key.widget-actions.js
+            │   │   │   ├── ._renderer.js
+            │   │   └── live/
+            │   │       ├── ._.DS_Store
+            │   │       ├── ._index.js
+            │   │       ├── ._kpi.live.widget-actions.js
+            │   ├── 12-34_leq/
+            │   │   ├── ._.DS_Store
+            │   │   ├── ._README.txt
+            │   │   ├── ._contracts.js
+            │   │   ├── ._core
+            │   │   ├── ._format.js
+            │   │   ├── ._index.js
+            │   │   ├── ._index_tech.txt
+            │   │   ├── ._leq.plugin.js
+            │   │   ├── ._leq.widget-actions.js
+            │   │   ├── ._model-specs
+            │   │   ├── ._plugins
+            │   │   ├── ._scheduler.js
+            │   │   ├── ._styles.css
+            │   │   ├── ._tex-numeric.js
+            │   │   ├── ._tex-symbolic.js
+            │   │   ├── ._view.js
+            │   │   ├── ._wiring
+            │   │   ├── core/
+            │   │   │   ├── ._index.js
+            │   │   ├── model-specs/
+            │   │   │   ├── ._index.js
+            │   │   │   ├── ._seir.js
+            │   │   │   ├── ._sir.js
+            │   │   │   ├── ._sird.js
+            │   │   │   ├── ._sirv.js
+            │   │   │   ├── ._sis.js
+            │   │   ├── plugins/
+            │   │   │   ├── ._drivers.js
+            │   │   │   ├── ._flow.js
+            │   │   │   ├── ._timing.js
+            │   │   └── wiring/
+            │   │       ├── ._README.txt
+            │   │       ├── ._bus.js
+            │   │       ├── ._index.js
+            │   └── 12-35_vt/
+            │       ├── ._.DS_Store
+            │       ├── ._grid wave
+            │       ├── ._state visuals
+            │       ├── ._wiring
+            │       ├── grid wave/
+            │       │   ├── ._.DS_Store
+            │       │   ├── ._UID Explore Γö¼Γòû Grid Wave.pdf
+            │       │   ├── ._demo.html
+            │       │   ├── ._grid.i18n.json
+            │       │   ├── ._gridwave.js
+            │       │   ├── ._gw.widget-actions.js
+            │       │   ├── ._index.js
+            │       │   ├── ._styles.css
+            │       │   ├── ._v1.1.0
+            │       │   ├── ._v1.1.4
+            │       │   ├── v1.1.0/
+            │       │   │   ├── ._demo.html
+            │       │   │   ├── ._gridwave.js
+            │       │   │   ├── ._index.js
+            │       │   │   ├── ._styles.css
+            │       │   └── v1.1.4/
+            │       │       ├── ._demo.html
+            │       │       ├── ._gridwave.js
+            │       │       ├── ._index.js
+            │       │       ├── ._styles.css
+            │       ├── state visuals/
+            │       │   ├── ._.DS_Store
+            │       │   ├── ._display.mode.js
+            │       │   ├── ._index.js
+            │       │   ├── ._sim-button.play05.js
+            │       │   ├── ._square
+            │       │   ├── ._square copy
+            │       │   ├── ._sv.widget-actions.js
+            │       │   ├── ._wheel
+            │       │   ├── square/
+            │       │   │   ├── ._equations.js
+            │       │   │   ├── ._hub
+            │       │   │   ├── ._hybrid
+            │       │   │   ├── ._index.js
+            │       │   │   ├── ._math
+            │       │   │   ├── hub/
+            │       │   │   │   ├── ._footer.js
+            │       │   │   │   ├── ._header.js
+            │       │   │   │   ├── ._momentum.js
+            │       │   │   ├── hybrid/
+            │       │   │   │   ├── ._core.js
+            │       │   │   └── math/
+            │       │   │       ├── ._rates.js
+            │       │   ├── square copy/
+            │       │   │   ├── ._equations.js
+            │       │   │   ├── ._hybrid.core.js
+            │       │   │   ├── ._index.js
+            │       │   └── wheel/
+            │       │       ├── ._README.txt
+            │       │       ├── ._angles.js
+            │       │       ├── ._canvas.js
+            │       │       ├── ._draw.arrows.js
+            │       │       ├── ._draw.hub.js
+            │       │       ├── ._draw.js
+            │       │       ├── ._draw.reff.js
+            │       │       ├── ._draw.segments.js
+            │       │       ├── ._draw.util.js
+            │       │       ├── ._index.js
+            │       │       ├── ._state.js
+            │       └── wiring/
+            │           ├── ._.DS_Store
+            │           ├── ._index.js
+            └── 12-4_support/
+                ├── ._.DS_Store
+                ├── ._12-41_boot
+                ├── ._12-42_widgets
+                ├── ._12-43_css
+                ├── ._12-44_js
+                ├── ._12-45_i18n
+                ├── 12-41_boot/
+                │   ├── ._.DS_Store
+                │   ├── ._README.txt
+                │   ├── ._boot
+                │   ├── ._engine
+                │   ├── ._index.js
+                │   ├── ._infra
+                │   ├── ._mount
+                │   ├── ._rehydrate
+                │   ├── ._shims
+                │   ├── ._tooltips
+                │   ├── boot/
+                │   │   ├── ._bridge.js
+                │   ├── engine/
+                │   │   ├── ._.DS_Store
+                │   │   ├── ._boot-engine.js
+                │   │   ├── ._index.js
+                │   ├── infra/
+                │   │   ├── ._.DS_Store
+                │   │   ├── ._pointer-bridge.boot.js
+                │   │   ├── ._pointer-bridge.js
+                │   │   ├── ._sim-bridge.boot.js
+                │   │   ├── ._sim-bridge.js
+                │   ├── mount/
+                │   │   ├── ._.DS_Store
+                │   │   ├── ._chart.js
+                │   │   ├── ._gridwave.js
+                │   │   ├── ._index.js
+                │   │   ├── ._kpi.key.js
+                │   │   ├── ._kpi.live.js
+                │   │   ├── ._params.classic.js
+                │   │   ├── ._params.formulas.js
+                │   │   ├── ._state.visuals.js
+                │   ├── rehydrate/
+                │   │   ├── ._.DS_Store
+                │   │   ├── ._core.js
+                │   └── tooltips/
+                │       ├── ._.DS_Store
+                │       ├── ._boot.js
+                │       ├── ._index.js
+                │       ├── ._tips.js
+                │       ├── ._tooltip.js
+                ├── 12-42_widgets/
+                │   ├── ._.DS_Store
+                │   ├── ._actions.js
+                │   ├── ._contracts.js
+                │   ├── ._example.widget-actions.js
+                │   ├── ._header.js
+                │   ├── ._header.tools.js
+                │   ├── ._hub.js
+                │   ├── ._index.js
+                │   ├── ._measure.js
+                │   ├── ._off-policy.js
+                │   ├── ._registry.js
+                │   ├── ._rehydrate.js
+                │   ├── ._render
+                │   ├── ._styles.js
+                │   ├── ._tips.js
+                │   ├── ._tooltip.js
+                │   └── render/
+                │       ├── ._button.js
+                │       ├── ._dropdown.js
+                │       ├── ._multitoggle.js
+                │       ├── ._segmented.js
+                │       ├── ._toggle.js
+                ├── 12-43_css/
+                │   ├── .__kpi.css
+                │   ├── ._demo2.css
+                │   ├── ._themes-school.css
+                │   ├── ._themes-university.css
+                │   ├── ._tokens.css
+                │   ├── ._uid-core.css
+                │   ├── ._uid-widgets-collapse.css
+                ├── 12-44_js/
+                │   ├── ._.DS_Store
+                │   ├── ._es-module-shims.min.js
+                │   ├── ._node_modules
+                │   ├── ._output
+                │   ├── ._package-lock.json
+                │   ├── ._package.json
+                │   ├── ._tex-chtml-full.js
+                │   ├── ._tex-chtml.js
+                │   ├── ._uid-mathjax-lib.js
+                │   ├── ._uid-mathjax.js
+                │   ├── ._uid-mj-entry.js
+                │   └── output/
+                │       ├── ._.DS_Store
+                │       ├── ._chtml
+                │       └── chtml/
+                │           ├── ._.DS_Store
+                │           ├── ._fonts
+                │           └── fonts/
+                │               ├── ._.DS_Store
+                │               ├── ._woff-v2
+                │               └── woff-v2/
+                └── 12-45_i18n/
+                    ├── ._de.json
+                    ├── ._en.json
