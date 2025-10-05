@@ -1,0 +1,34 @@
+{
+  "imports": {
+    "@uid/boot": "/uid-e_v1/12-4_support/12-41_boot/index.js",
+    "@uid/app/boot.js": "/uid-e_v1/12-4_support/12-41_boot/index.js",
+    "@uid/app/": "/uid-e_v1/12-4_support/",
+
+    "@uid/base": "/uid-e_v1/12-1_base/index.js",
+    "@uid/base/": "/uid-e_v1/12-1_base/",
+    "@uid/base/bus.js": "/uid-e_v1/12-1_base/bus.js",
+
+    "@uid/bus": "/uid-e_v1/12-1_base/bus.js",
+    "@uid/schema": "/uid-e_v1/12-1_base/schema.js",
+    "@uid/engine": "/uid-e_v1/12-1_base/engine.js",
+    "@uid/uid": "/uid-e_v1/12-1_base/uid.js",
+
+    "@uid/input/": "/uid-e_v1/12-2_input/",
+    "@uid/para": "/uid-e_v1/12-2_input/12-21_para/index.js",
+
+    "@uid/pres/": "/uid-e_v1/12-3_presentation/",
+    "@uid/chart": "/uid-e_v1/12-3_presentation/12-31_chart/index.js",
+    "@uid/formulas": "/uid-e_v1/12-3_presentation/12-32_formula/index.js",
+    "@uid/kpi": "/uid-e_v1/12-3_presentation/12-33_kpi/index.js",
+    "@uid/leq": "/uid-e_v1/12-3_presentation/12-34_leq/index.js",
+    "@uid/vt": "/uid-e_v1/12-3_presentation/12-35_vt/index.js",
+
+    "@uid/widgets": "/uid-e_v1/12-4_support/12-42_widgets/index.js",
+    "@uid/widgets/": "/uid-e_v1/12-4_support/12-42_widgets/",
+    "@uid/css": "/uid-e_v1/12-4_support/12-43_css/index.js",
+    "@uid/css/": "/uid-e_v1/12-4_support/12-43_css/",
+    "@uid/js/": "/uid-e_v1/12-4_support/12-44_js/",
+    "@uid/i18n": "/uid-e_v1/12-4_support/12-45_i18n/index.js",
+    "@uid/i18n/": "/uid-e_v1/12-4_support/12-45_i18n/"
+  }
+}
