@@ -1,0 +1,18 @@
+{
+  "labels": {
+    "R0": "R₀",
+    "beta": "β",
+    "gamma": "γ",
+    "D": "D (days)",
+    "N": "N (population)",
+    "I0": "I₀ (initial)",
+    "T": "T (days)",
+    "dt": "Δt",
+    "measures": "Measures"
+  },
+  "kpi": {
+    "R0": "R₀",
+    "Ipeak": "Iₚₑₐₖ",
+    "tpeak": "tₚₑₐₖ"
+  }
+}
