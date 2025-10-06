@@ -1,17 +1,15 @@
 /*!
  * UID-E · Core CSS
- * Version: 1.1.0 (2025-10-04)
+ * Version: 1.2.1 (2025-10-06)
  * Changes:
- *  - v1.1.0  Collapsed State vereinheitlicht:
- *             • Wenn Header data-enabled="false": Body hat kein Grid/Gap/Padding/Min-Height/Bordertop.
- *             • KPI-Decks im zugeklappten Body ohne Spacing (gap/padding/margin/min-height = 0).
- *             • --kpi-overlay-space im Collapsed-Zustand auf 0 gesetzt (Reservefläche neutralisiert).
- *  - v1.0.1  Entfernt: doppelte .widget.widget-kpi .widget-body Regel mit festem +44px;
- *             Beibehalten: variable Steuerung via --kpi-gap und --kpi-overlay-space.
+ *  - v1.2.1  Konsolidiert: Formelkarten & restliche Legacy-Fragmente entfernt, Kommentare gestrafft.
+ *  - v1.2.0  Cleanup: Dev-/Legacy-Blöcke entfernt; Legacy-Header-Adjazenzregel gestrichen.
+ *  - v1.1.0  Collapsed State vereinheitlicht (kein Grid/Gap/Padding/Min-Height/Bordertop im Body).
+ *  - v1.0.1  KPI-Body ohne hartes +44px; Steuerung via --kpi-gap / --kpi-overlay-space.
  */
 
 /* =========================
-   0) Root Tokens
+   0) Root Tokens & Base
    ========================= */
 :root {
   --gap: 16px;
@@ -33,211 +31,38 @@ body {
 }
 
 /* =========================
-   1) Dev Header / Grid
+   1) Support / Canvas
    ========================= */
-header.devbar {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(130px,1fr)) auto;
-  gap: var(--gap);
-  align-items: center;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: var(--shadow-1);
-  margin-bottom: var(--gap);
-}
-header.devbar label { font-size:12px; color:var(--muted); display:block; margin-bottom:4px; }
-header.devbar select,
-header.devbar input[type=checkbox] {
-  width:100%; padding:8px; border-radius:8px;
-  border:1px solid var(--border);
-  background: rgba(255,255,255,0.04);
-  color:var(--fg);
-}
-header.devbar button {
-  padding:8px 12px; border-radius:8px;
-  border:1px solid var(--border);
-  background: rgba(255,255,255,0.06);
-  color:var(--fg);
-  cursor:pointer;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--gap);
-  max-width:1400px;
-  margin:0 auto;
-}
-.panel {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:var(--gap);
-  box-shadow: var(--shadow-1);
-}
-.chart-wrap { position:relative; width:100%; height:360px; }
-.vt-wrap    { position:relative; width:100%; height:180px; margin-top:var(--gap); }
-.lkpi-deck  { margin-bottom: var(--gap); }
-
-.slider-row { margin-bottom: 10px; }
-.slider-row .meta { display:flex; justify-content:space-between; align-items:baseline; }
-.slider-row label { font-size:12px; color:var(--muted); }
-.slider-row .val { font-variant-numeric: tabular-nums; font-weight:600; }
-.slider-row input[type=range] { width:100%; }
-
-@media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
-
-.uid-ep-badge {
-  position:absolute; top:8px; right:12px;
-  background:rgba(0,0,0,0.5); color:#fff;
-  font-size:12px; padding:2px 8px; border-radius:8px;
-  pointer-events:none;
-}
+#gw-host canvas { width: 100%; height: 100%; display: block; }
 
 /* =========================
-   2) Parameter Accordion
+   2) KPI Widget (Core)
    ========================= */
-.pt-accordion { display: grid; gap: 12px; }
-.pt-acc-section {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--panel);
-  box-shadow: var(--shadow-1);
-  overflow: clip;
-}
-.pt-acc-head {
-  width: 100%;
-  text-align: left;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 12px;
-  background: transparent;
-  border: 0; cursor: pointer; color: var(--fg);
-  font-weight: 600;
-}
-.pt-acc-head[aria-expanded="true"] .pt-acc-caret { transform: rotate(180deg); }
-.pt-acc-caret { transition: transform .18s ease; }
-.pt-acc-body { padding: 10px 12px 12px; display: grid; gap: 8px; }
-
-.pt-acc-caret{ transition: transform .15s ease; }
-.pt-acc-head[aria-expanded="true"] .pt-acc-caret{ transform: rotate(180deg); }
-.pt-acc-head:focus-visible{
-  outline:2px solid rgba(3,195,252,.70);
-  outline-offset:2px;
-  border-radius:8px;
-}
-
-/* =========================
-   3) Support / Canvas
-   ========================= */
-#gw-host canvas { width: 100%; height: 100%; display:block; }
-
-/* =========================
-   4) KPI Widget (Core)
-   ========================= */
-/* Ein Regelblock, variabel gesteuert – KEIN hartes +44px mehr */
+/* Variabel gesteuert – KEIN hartes +44px mehr */
 .widget.widget-kpi .widget-body {
-  /* Basisabstand (links/rechts/unter) */
-  padding: var(--kpi-gap, 12px) !important;
+  padding: var(--kpi-gap, 12px) !important; /* L/R/Bottom */
 }
 
-/* Hinweis:
-   Demo-spezifische Layouts können per
-     #kpi-widget { --kpi-overlay-space: 0px; }
-   die Header-Reserve gezielt reduzieren, OHNE !important. */
-
 /* =========================
-   4b) Collapsed State (Unified)
+   3) Collapsed State (Unified)
    ========================= */
-/* Wenn der Header eines Widgets deaktiviert ist, wird der Body vollständig „restlos“ zugeklappt. */
-.uidw-header[data-enabled="false"] + .widget-body,
-.widget-header[data-enabled="false"] + .widget-body {
-  /* Keine Layout-Reste */
-  display: block !important;    /* Grid auflösen (gap wirkt dann nicht mehr) */
+/* Wenn der neue Header deaktiviert ist, wird der Body restlos zugeklappt. */
+.uidw-header[data-enabled="false"] + .widget-body {
+  display: block !important;  /* Grid/Gap neutralisieren */
   padding: 0 !important;
   margin: 0 !important;
   min-height: 0 !important;
   gap: 0 !important;
   border-top: 0 !important;
 
-  /* Reserveflächen neutralisieren (z. B. KPI-Overlay) */
+  /* Reserveflächen (z. B. KPI-Overlay) neutralisieren */
   --kpi-overlay-space: 0px;
 }
 
-/* Innenliegende KPI-Decks im zugeklappten Zustand ebenfalls ohne Spacing */
-.uidw-header[data-enabled="false"] + .widget-body .kpi-deck,
-.widget-header[data-enabled="false"] + .widget-body .kpi-deck {
+/* Innenliegende KPI-Decks im zugeklappten Zustand ohne Spacing */
+.uidw-header[data-enabled="false"] + .widget-body .kpi-deck {
   gap: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
   min-height: 0 !important;
-}
-
-/* =========================
-   5) Formelkarten / Typo (WP-6)
-   ========================= */
-#pt-view-formulas .fe-card,
-#pt-view-formulas .card {
-  scroll-snap-align: start;
-  scroll-margin-top: 48px;
-}
-#pt-view-formulas { scroll-snap-type: y proximity; }
-
-.fe-num{
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1, "lnum" 1;
-  line-height: 1.25;
-  min-height: 3.6em; /* ~3 Zeilen × 1.2em */
-}
-.fe-card{ contain: layout paint; }
-
-#pt-view-formulas .fe-card{
-  display:grid;
-  grid-template-rows:auto auto auto; /* Formel · Werte · Slider */
-  gap:8px;
-  padding:12px 14px;
-  border-radius:10px;
-  background:transparent;
-  contain: layout paint;
-}
-#pt-view-formulas .fe-card .fe-sym{
-  opacity:.9;
-  line-height:1.2;
-  margin:0;
-}
-#pt-view-formulas .fe-card .fe-num{
-  font-variant-numeric: tabular-nums;
-  font-feature-settings:"tnum" 1,"lnum" 1;
-  line-height:1.25;
-  min-height:3.2em;
-  margin:0;
-}
-#pt-view-formulas .fe-card .fe-ctrl{
-  margin-top:6px;
-  padding-top:8px;
-  border-top:1px dashed rgba(255,255,255,.12);
-}
-#pt-view-formulas .fe-card .fe-ctrl input[type="range"]{
-  width:100%;
-  margin:0;
-}
-#pt-view-formulas .fe-card .fe-var{
-  transition: color .2s ease, text-shadow .2s ease;
-}
-
-/* =========================
-   6) Off-State Vector/Grid Widgets
-   ========================= */
-:root{
-  --widget-off-pad-y: 24px; /* gleiche Vorgabe wie im KPI-Overlay */
-}
-[data-v-enabled="false"] .widget-body,
-[data-g-enabled="false"] .widget-body{
-  min-height: 0 !important;
-  max-height: calc(var(--widget-off-pad-y) * 2) !important;
-  padding-top: var(--widget-off-pad-y) !important;
-  padding-bottom: var(--widget-off-pad-y) !important;
-  overflow: hidden !important;
-  /* Seitenabstände belassen; falls nötig: padding-left/right ergänzen */
 }
