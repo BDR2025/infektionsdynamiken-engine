@@ -8,9 +8,11 @@
  * License:  CC BY 4.0
  *
  * Created:  2025-10-03
- * Updated:  2025-10-03
- * Version:  1.4.2
+ * Updated:  2025-10-06
+ * Version:  1.4.3
  * Changelog:
+ *   - v1.4.3  Robustheit: Initial-Run bei ON in attachAutoRehydrate(); ensureSticky() kickt
+ *             timeline:set, falls keine Stickies (pointer/series) vorhanden sind; Replay danach.
  *   - v1.4.2  Repo-Polishing: Kopfzeile/Gliederung, Guards, kommentierte Defaults; API unverändert.
  *
  * eAnnotation:
@@ -22,6 +24,22 @@
 'use strict';
 
 /* ============================================================================
+ * Helper: ensureSticky(bus, { tFallback })
+ * ---------------------------------------------------------------------------
+ * Garantiert, dass vor einem Replay mindestens grundlegende Sim-Stickies vorhanden sind.
+ * Fehlen pointer/series, wird sanft ein timeline:set emittiert, damit die Engine liefert.
+ * ------------------------------------------------------------------------- */
+function ensureSticky(bus, { tFallback = 0 } = {}) {
+  try {
+    const hasPointer = !!bus?.getLast?.('uid:e:sim:pointer');
+    const hasSeries  = !!bus?.getLast?.('uid:e:data:series');
+    if (!hasPointer || !hasSeries) {
+      bus?.emit?.('uid:e:timeline:set', { t: tFallback, source: 'rehydrate:init' });
+    }
+  } catch {}
+}
+
+/* ============================================================================
  * 1) Public API: rehydrateWidget(bus, events)
  * ---------------------------------------------------------------------------
  * @param {object} bus  - EBUS-kompatibel: getLast(ev), emit(ev, payload)
@@ -30,6 +48,9 @@
  * ------------------------------------------------------------------------- */
 export function rehydrateWidget(bus, events = []) {
   if (!bus || !Array.isArray(events) || events.length === 0) return;
+
+  // Vor dem Replay sicherstellen, dass notwendige Stickies vorhanden sind
+  ensureSticky(bus, { tFallback: 0 });
 
   for (const item of events) {
     if (!item || typeof item.ev !== 'string' || !item.ev) continue;
@@ -55,6 +76,7 @@ export function rehydrateWidget(bus, events = []) {
  *   a) Wechsel von data-enabled (Header) auf "true"
  *   b) Wechsel von data-widget-enabled (Host) auf "true"
  *   c) CustomEvent 'uid:widget:power:on'
+ * - Zusätzlich: Initial-Run, falls Widget beim Attach bereits ON ist.
  * @returns {Function} dispose()
  * ------------------------------------------------------------------------- */
 /**
@@ -91,7 +113,16 @@ export function attachAutoRehydrate(host, bus, events, headerEl) {
   const onPowerOn  = () => run();
   try { host.addEventListener('uid:widget:power:on', onPowerOn); } catch {}
 
-  // 3) Dispose
+  // 3) Initial-Run: falls Widget beim Attach bereits ON ist
+  try {
+    const isOn = (host?.dataset?.widgetEnabled ?? 'true') !== 'false';
+    if (isOn) {
+      ensureSticky(bus, { tFallback: 0 });
+      run();
+    }
+  } catch {}
+
+  // 4) Dispose
   return () => {
     try { mo.disconnect(); } catch {}
     try { host.removeEventListener('uid:widget:power:on', onPowerOn); } catch {}
