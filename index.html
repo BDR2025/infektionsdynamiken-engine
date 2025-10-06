@@ -6,9 +6,11 @@
     Role:      Einstiegspunkt (App-Shell) mit externer Import-Map & Orchestrator
     License:   CC BY 4.0
 
-    Updated:   2025-10-05
-    Version:   1.4.2
+    Updated:   2025-10-06
+    Version:   1.5.0
     Changelog:
+      - v1.5.0  Demo-2-Layout reaktiviert: d2-grid, d2-left/right, data-widget-enabled auf <article>, demo2.css eingebunden.
+      - v1.4.3  Legacy-Styles aus 12-43_css (ohne KPI) wieder eingebunden.
       - v1.4.2  MathJax: nur Preloads (uid-mathjax.js, tex-chtml-full.js); kein direkter Loader im <head>.
       - v1.4.1  MathJax-Readiness: Preloads ergänzt.
       - v1.4.0  Widget-Hosts ergänzt (chart/kpi/gridwave/state visuals/params/formulas/leq).
@@ -22,6 +24,20 @@
     <!-- Import-Map muss vor dem ersten Module-Script geparst sein -->
     <script type="importmap" src="/uid-e_v1/importmap.json"></script>
 
+    <!-- 12-43_css · Legacy-Compat (ohne KPI) -->
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/tokens.css" />
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/themes-school.css" />
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/themes-university.css" />
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/uid-core.css" />
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/uid-widgets-collapse.css" />
+
+    <!-- Engine-Hülle (bleibt schlank) -->
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/engine-core.css" />
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/engine-widgets.css" />
+
+    <!-- Demo-2 Layout (Cards, Grid, Spacing): bewusst NACH Engine, damit Demo-Optik gewinnt -->
+    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/demo2.css" />
+
     <!-- Preloads: Hot-Path-Module & MathJax (lokal, performance-first) -->
     <link rel="modulepreload" href="/uid-e_v1/12-4_support/12-41_boot/index.js" />
     <link rel="modulepreload" href="/uid-e_v1/12-1_base/index.js" />
@@ -34,93 +50,105 @@
     <link rel="icon" href="data:,">
   </head>
   <body>
-    <main id="app">
+    <!-- Demo-2 Scope & Grid aktivieren -->
+    <main id="app" class="d2-grid" data-demo="2">
 
-      <!-- PARAMS (klassisch) -->
-      <section id="app-params" data-widget="params" data-widget-enabled="true">
-        <article id="params-widget" class="widget">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="params-host" aria-label="Parameter (klassisch)"></div>
-          </div>
-        </article>
-      </section>
+      <!-- LINKE SPALTE (Chart → KPI → State Visuals → GridWave → LEQ) -->
+      <div class="d2-left">
+        <!-- CHART -->
+        <section id="app-chart" data-widget="chart">
+          <article id="chart-widget" class="widget widget-chart" data-widget-enabled="true">
+            <header class="widget-header"></header>
+            <div class="widget-body">
+              <div id="chart-host" aria-label="Chart"></div>
+            </div>
+          </article>
+        </section>
 
-      <!-- KPI (kompartimente + live) -->
-      <section id="app-kpi" data-widget="kpi" data-widget-enabled="true">
-        <article id="kpi-widget" class="widget widget-kpi">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="kpi-comp" class="kpi-deck" aria-label="KPIs (Kompartimente)"></div>
-            <div id="kpi-live" class="kpi-deck" aria-label="KPIs (live)"></div>
-          </div>
-        </article>
+        <!-- KPI (kompartimente + live) – Styling per JS; kein KPI-CSS -->
+        <section id="app-kpi" data-widget="kpi">
+          <article id="kpi-widget" class="widget widget-kpi" data-widget-enabled="true">
+            <header class="widget-header"></header>
+            <div class="widget-body">
+              <div id="kpi-comp" class="kpi-deck" aria-label="KPIs (Kompartimente)"></div>
+              <div id="kpi-live" class="kpi-deck" aria-label="KPIs (live)"></div>
+            </div>
+          </article>
+        </section>
+
+        <!-- VISUAL TOOLS (State Visuals + GridWave) -->
+<section id="app-vt" data-widget="vt">
+  <section class="d2-visuals">
+    <!-- State Visuals -->
+    <article id="sv-widget" class="widget" data-widget-enabled="true">
+      <header class="widget-header"></header>
+      <div class="widget-body">
+        <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
+        <!-- optionaler Legacy-Host, falls alte Module ihn suchen -->
+        <div id="vt-host" class="square-host" hidden></div>
+      </div>
+    </article>
+
+    <!-- GridWave -->
+    <article id="gw-widget" class="widget" data-widget-enabled="true">
+      <header class="widget-header"></header>
+      <div class="widget-body">
+        <div id="gw-host" class="square-host" aria-label="GridWave">
+          <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
+        </div>
+      </div>
+    </article>
+  </section>
+</section>
+
+
+        <!-- LEQ (Living Equation) -->
+        <section id="app-leq" data-widget="leq">
+          <article id="core-equation-widget" class="widget" data-widget-enabled="true">
+            <header class="widget-header"></header>
+            <div class="widget-body">
+              <div id="core-equation" data-widget-id="core-equation"></div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <!-- RECHTE SPALTE (Params klassisch → Formeln → Key KPIs) -->
+      <div class="d2-right">
+        <!-- PARAMS (klassisch) -->
+        <section id="app-params" data-widget="params">
+          <article id="params-widget" class="widget" data-widget-enabled="true">
+            <header class="widget-header"></header>
+            <div class="widget-body">
+              <div id="params-host" aria-label="Parameter (klassisch)"></div>
+            </div>
+          </article>
+        </section>
+
+        <!-- PARAMS (Formeln) -->
+        <section id="app-formulas" data-widget="formulas">
+          <article id="params-formulas-widget" class="widget" data-widget-enabled="true"
+                   data-pt-compact="1"
+                   data-pt-flat="1"
+                   data-pt-show-sigma="auto"
+                   data-pt-order="D,R0,beta,gamma,sigma,beta_eff,R_eff_t,R_eff_0">
+            <header class="widget-header"></header>
+            <div class="widget-body">
+              <div id="params-formulas-host" aria-label="Parameter (Formeln)"></div>
+            </div>
+          </article>
+        </section>
 
         <!-- Key KPIs (statisch) -->
-        <article id="kpi-static-widget" class="widget">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="kpi-static" class="kpi-deck" aria-label="KPIs (static)"></div>
-          </div>
-        </article>
-      </section>
-
-      <!-- CHART -->
-      <section id="app-chart" data-widget="chart" data-widget-enabled="true">
-        <article id="chart-widget" class="widget widget-chart">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="chart-host" aria-label="Chart"></div>
-          </div>
-        </article>
-      </section>
-
-      <!-- PARAMS (Formeln) -->
-      <section id="app-formulas" data-widget="formulas" data-widget-enabled="true">
-        <article id="params-formulas-widget" class="widget"
-                 data-pt-compact="1"
-                 data-pt-flat="1"
-                 data-pt-show-sigma="auto"
-                 data-pt-order="D,R0,beta,gamma,sigma,beta_eff,R_eff_t,R_eff_0">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="params-formulas-host" aria-label="Parameter (Formeln)"></div>
-          </div>
-        </article>
-      </section>
-
-      <!-- LEQ (Living Equation) -->
-      <section id="app-leq" data-widget="leq" data-widget-enabled="true">
-        <article id="core-equation-widget" class="widget">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="core-equation" data-widget-id="core-equation"></div>
-          </div>
-        </article>
-      </section>
-
-      <!-- VISUAL TOOLS (State Visuals + GridWave) -->
-      <section id="app-vt" data-widget="vt" data-widget-enabled="true">
-        <!-- State Visuals -->
-        <article id="sv-widget" class="widget">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
-            <!-- Legacy-Host aus Demo2 (optional, falls alte Module ihn suchen): -->
-            <div id="vt-host" class="square-host" hidden></div>
-          </div>
-        </article>
-
-        <!-- GridWave -->
-        <article id="gw-widget" class="widget">
-          <header class="widget-header"></header>
-          <div class="widget-body">
-            <div id="gw-host" class="square-host" aria-label="GridWave">
-              <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
+        <section>
+          <article id="kpi-static-widget" class="widget" data-widget-enabled="true">
+            <header class="widget-header"></header>
+            <div class="widget-body">
+              <div id="kpi-static" class="kpi-deck" aria-label="KPIs (static)"></div>
             </div>
-          </div>
-        </article>
-      </section>
+          </article>
+        </section>
+      </div>
 
     </main>
 
