@@ -7,8 +7,9 @@
     License:   CC BY 4.0
 
     Updated:   2025-10-06
-    Version:   1.5.1
+    Version:   1.5.2
     Changelog:
+      - v1.5.2  Early-Access Header & Banner statisch integriert; /early-access/early-access.css verlinkt.
       - v1.5.1  Legacy-Header <header.widget-header> entfernt; Collapse-Adjazenz über .uidw-header sichergestellt.
       - v1.5.0  Demo-2-Layout reaktiviert: d2-grid, d2-left/right, data-widget-enabled auf <article>, demo2.css eingebunden.
       - v1.4.3  Legacy-Styles aus 12-43_css (ohne KPI) wieder eingebunden.
@@ -33,6 +34,9 @@
     <!-- Demo-2 Layout (Cards, Grid, Spacing) -->
     <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/demo2.css" />
 
+    <!-- Early-Access Header/Banner (Root-Ordner) -->
+    <link rel="stylesheet" href="/early-access/early-access.css" />
+
     <!-- Preloads: Hot-Path-Module & MathJax (lokal, performance-first) -->
     <link rel="modulepreload" href="/uid-e_v1/12-4_support/12-41_boot/index.js" />
     <link rel="modulepreload" href="/uid-e_v1/12-1_base/index.js" />
@@ -45,6 +49,42 @@
     <link rel="icon" href="data:,">
   </head>
   <body>
+
+    <!-- Early-Access Header (Landing-Look, statisch) -->
+<header class="ea-wrap" role="banner" aria-label="Seitentitel & Navigation">
+  <div class="ea-header">
+    <!-- Brand -->
+    <div class="ea-brand">
+      <div class="ea-logo" aria-hidden="true">ID</div>
+      <div class="ea-titles">
+        <div class="ea-title">Infektionsdynamiken verstehen</div>
+        <div class="ea-sub">UID-Explore Engine v1 · Early Access</div>
+      </div>
+    </div>
+
+    <!-- Nav zentriert -->
+    <nav class="ea-nav" aria-label="Navigation">
+      <a class="ea-link" href="https://infektionsdynamiken.de" target="_blank" rel="noopener">Landing</a>
+      <a class="ea-link" href="https://repository.infektionsdynamiken.de" target="_blank" rel="noopener">Repository</a>
+      <a class="ea-link" href="https://infektionsdynamiken.de/#legal" target="_blank" rel="noopener">Rechtliches</a>
+    </nav>
+
+    <!-- Controls rechts (ausgegraut, ohne Funktion) -->
+    <div class="ea-controls">
+      <span class="ea-chip is-disabled" aria-disabled="true" title="Modusumschalter kommt später">S</span>
+      <span class="ea-chip is-disabled" aria-disabled="true" title="Modusumschalter kommt später">U</span>
+      <span class="ea-icon is-disabled" aria-disabled="true" title="Sprache folgt">🌐</span>
+    </div>
+  </div>
+
+  <!-- Banner: wähle theme-s (grün) oder theme-e (gelb) -->
+  <div class="ea-banner theme-e" role="status" aria-live="polite">
+    <strong>Early Access</strong> — Öffentliche Vorschau. Diese Demo zeigt den aktuellen Arbeitsstand der UID-Engine.
+    Funktionen & Performance entwickeln sich noch. <a href="mailto:info@infektionsdynamiken.de">Feedback</a> willkommen.
+  </div>
+</header>
+
+
     <!-- Demo-2 Scope & Grid aktivieren -->
     <main id="app" class="d2-grid" data-demo="2">
 

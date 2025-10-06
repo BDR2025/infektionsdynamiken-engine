@@ -1,0 +1,128 @@
+/*!
+ * Early-Access Header (Landing-Look) · v1.1 (2025-10-06)
+ * Änderungen ggü. v1.0:
+ * - Header-Layout auf 3-Spalten-Grid (Brand | Nav zentriert | Controls rechts)
+ * - Banner-Themes via Tokens: theme-s (var(--c-s)), theme-e (var(--c-e))
+ * - Konsolidiert & kommentiert, responsive Feinschliff
+ */
+
+/* Fallbacks, falls Engine-Tokens fehlen */
+:root{
+  --ea-max-width: var(--d2-max-width, 1280px);
+  --ea-pad-x:     var(--d2-page-pad, 24px);
+  --ea-gap:       var(--d2-gap, 12px);
+  --ea-gap-lg:    var(--d2-gap-lg, 16px);
+
+  /* Landing-Look (heller Header) */
+  --ea-surface:   #ffffff;
+  --ea-text:      #0b1b2d;
+  --ea-muted:     #637386;
+  --ea-border:    rgba(8,23,37,0.12);
+  --ea-shadow:    0 2px 8px rgba(0,0,0,0.05);
+  --ea-logo-ring: #1fd0c8;
+
+  /* Banner-Defaults (werden durch Themes überschrieben) */
+  --ea-banner-bg: #1fbe8b;
+  --ea-banner-fg: #0b1b2d;
+}
+
+/* Rahmen & Breite wie Landing */
+.ea-wrap{
+  inline-size: 100%;
+  max-inline-size: var(--ea-max-width);
+  margin-inline: auto;
+  padding-inline: var(--ea-pad-x);
+  margin-block: var(--ea-gap-lg);
+}
+
+/* Header: Brand | Nav (zentriert) | Controls (rechts) */
+.ea-header{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  background: var(--ea-surface);
+  color: var(--ea-text);
+  border: 1px solid var(--ea-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--ea-shadow);
+}
+
+/* Brand */
+.ea-brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+.ea-logo{
+  inline-size: 28px; block-size: 28px; border-radius: 8px;
+  display:grid; place-items:center; font: 700 12px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--ea-logo-ring);
+  border: 2px solid var(--ea-logo-ring);
+  background: #f0fffd;
+}
+.ea-titles{ line-height:1.1; min-width:0; }
+.ea-title{ font: 700 16px/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: var(--ea-text); }
+.ea-sub  { font: 400 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: var(--ea-muted); }
+
+/* Nav zentriert */
+.ea-nav{
+  justify-self: center;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.ea-link{
+  text-decoration:none; color: var(--ea-text);
+  padding: 6px 10px; border-radius: 999px; border: 1px solid transparent;
+}
+.ea-link:is(:hover,:focus-visible){
+  border-color: var(--ea-border);
+  outline: 2px solid rgba(8,23,37,0.08); outline-offset: 2px;
+}
+
+/* Controls rechts (ausgegraut, ohne Funktion) */
+.ea-controls{ justify-self: end; display:flex; gap:8px; }
+.ea-chip, .ea-icon{
+  display:inline-grid; place-items:center;
+  min-inline-size: 30px; height: 30px; border-radius: 999px;
+  font: 600 13px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--ea-text);
+  border: 1px solid var(--ea-border);
+  background: #eef2f5;
+}
+.is-disabled{ opacity:.45; filter:grayscale(1); pointer-events:none; cursor: not-allowed; }
+.ea-icon{ font-size: 14px; padding-inline: 6px; }
+
+/* Banner über die ganze Breite */
+.ea-banner{
+  margin-block-start: var(--ea-gap);
+  border-radius: 12px;
+  padding: 8px 12px;
+  text-align: center;
+  font: 700 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  letter-spacing: .02em;
+  color: var(--ea-banner-fg);
+  background: var(--ea-banner-bg);
+  border: 1px solid color-mix(in srgb, var(--ea-banner-bg) 65%, black 35%);
+}
+.ea-banner a{ color: inherit; text-decoration: underline; }
+
+/* Banner-Themes aus Tokens (S/E) */
+.ea-banner.theme-s{ --ea-banner-bg: var(--c-s, #22c55e); --ea-banner-fg: #0b1b2d; }
+.ea-banner.theme-e{ --ea-banner-bg: var(--c-e, #f59e0b); --ea-banner-fg: #0b1b2d; }
+
+/* Responsive */
+@media (max-width: 640px){
+  .ea-header{ padding: 10px 12px; border-radius: 10px; }
+  .ea-logo{ inline-size: 26px; block-size: 26px; border-radius: 7px; }
+  .ea-title{ font-size: 15px; }
+  .ea-sub{   font-size: 11px; }
+  .ea-chip, .ea-icon{ min-inline-size: 28px; height: 28px; }
+}
+
+/* Fallback, falls .ea-controls (noch) nicht im Markup ist:
+   Nav zentriert halten; Chips/Globus im Nav nach rechts schieben */
+@supports(selector(:has(*))){
+  .ea-header:not(:has(.ea-controls)){
+    display:flex; align-items:center; gap:16px; justify-content:space-between;
+  }
+  .ea-header:not(:has(.ea-controls)) .ea-nav{ flex:1 1 auto; justify-content:center; }
+  .ea-header:not(:has(.ea-controls)) .ea-nav .ea-chip:first-of-type,
+  .ea-header:not(:has(.ea-controls)) .ea-nav .ea-icon:first-of-type{ margin-inline-start:auto; }
+}
