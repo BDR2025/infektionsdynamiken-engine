@@ -7,8 +7,9 @@
     License:   CC BY 4.0
 
     Updated:   2025-10-06
-    Version:   1.5.0
+    Version:   1.5.1
     Changelog:
+      - v1.5.1  Legacy-Header <header.widget-header> entfernt; Collapse-Adjazenz über .uidw-header sichergestellt.
       - v1.5.0  Demo-2-Layout reaktiviert: d2-grid, d2-left/right, data-widget-enabled auf <article>, demo2.css eingebunden.
       - v1.4.3  Legacy-Styles aus 12-43_css (ohne KPI) wieder eingebunden.
       - v1.4.2  MathJax: nur Preloads (uid-mathjax.js, tex-chtml-full.js); kein direkter Loader im <head>.
@@ -31,11 +32,7 @@
     <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/uid-core.css" />
     <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/uid-widgets-collapse.css" />
 
-    <!-- Engine-Hülle (bleibt schlank) -->
-    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/engine-core.css" />
-    <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/engine-widgets.css" />
-
-    <!-- Demo-2 Layout (Cards, Grid, Spacing): bewusst NACH Engine, damit Demo-Optik gewinnt -->
+    <!-- Demo-2 Layout (Cards, Grid, Spacing) -->
     <link rel="stylesheet" href="/uid-e_v1/12-4_support/12-43_css/demo2.css" />
 
     <!-- Preloads: Hot-Path-Module & MathJax (lokal, performance-first) -->
@@ -58,7 +55,6 @@
         <!-- CHART -->
         <section id="app-chart" data-widget="chart">
           <article id="chart-widget" class="widget widget-chart" data-widget-enabled="true">
-            <header class="widget-header"></header>
             <div class="widget-body">
               <div id="chart-host" aria-label="Chart"></div>
             </div>
@@ -68,7 +64,6 @@
         <!-- KPI (kompartimente + live) – Styling per JS; kein KPI-CSS -->
         <section id="app-kpi" data-widget="kpi">
           <article id="kpi-widget" class="widget widget-kpi" data-widget-enabled="true">
-            <header class="widget-header"></header>
             <div class="widget-body">
               <div id="kpi-comp" class="kpi-deck" aria-label="KPIs (Kompartimente)"></div>
               <div id="kpi-live" class="kpi-deck" aria-label="KPIs (live)"></div>
@@ -77,35 +72,31 @@
         </section>
 
         <!-- VISUAL TOOLS (State Visuals + GridWave) -->
-<section id="app-vt" data-widget="vt">
-  <section class="d2-visuals">
-    <!-- State Visuals -->
-    <article id="sv-widget" class="widget" data-widget-enabled="true">
-      <header class="widget-header"></header>
-      <div class="widget-body">
-        <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
-        <!-- optionaler Legacy-Host, falls alte Module ihn suchen -->
-        <div id="vt-host" class="square-host" hidden></div>
-      </div>
-    </article>
+        <section id="app-vt" data-widget="vt">
+          <section class="d2-visuals">
+            <!-- State Visuals -->
+            <article id="sv-widget" class="widget" data-widget-enabled="true">
+              <div class="widget-body">
+                <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
+                <!-- optionaler Legacy-Host, falls alte Module ihn suchen -->
+                <div id="vt-host" class="square-host" hidden></div>
+              </div>
+            </article>
 
-    <!-- GridWave -->
-    <article id="gw-widget" class="widget" data-widget-enabled="true">
-      <header class="widget-header"></header>
-      <div class="widget-body">
-        <div id="gw-host" class="square-host" aria-label="GridWave">
-          <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
-        </div>
-      </div>
-    </article>
-  </section>
-</section>
-
+            <!-- GridWave -->
+            <article id="gw-widget" class="widget" data-widget-enabled="true">
+              <div class="widget-body">
+                <div id="gw-host" class="square-host" aria-label="GridWave">
+                  <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
 
         <!-- LEQ (Living Equation) -->
         <section id="app-leq" data-widget="leq">
           <article id="core-equation-widget" class="widget" data-widget-enabled="true">
-            <header class="widget-header"></header>
             <div class="widget-body">
               <div id="core-equation" data-widget-id="core-equation"></div>
             </div>
@@ -118,7 +109,6 @@
         <!-- PARAMS (klassisch) -->
         <section id="app-params" data-widget="params">
           <article id="params-widget" class="widget" data-widget-enabled="true">
-            <header class="widget-header"></header>
             <div class="widget-body">
               <div id="params-host" aria-label="Parameter (klassisch)"></div>
             </div>
@@ -132,7 +122,6 @@
                    data-pt-flat="1"
                    data-pt-show-sigma="auto"
                    data-pt-order="D,R0,beta,gamma,sigma,beta_eff,R_eff_t,R_eff_0">
-            <header class="widget-header"></header>
             <div class="widget-body">
               <div id="params-formulas-host" aria-label="Parameter (Formeln)"></div>
             </div>
@@ -142,7 +131,6 @@
         <!-- Key KPIs (statisch) -->
         <section>
           <article id="kpi-static-widget" class="widget" data-widget-enabled="true">
-            <header class="widget-header"></header>
             <div class="widget-body">
               <div id="kpi-static" class="kpi-deck" aria-label="KPIs (static)"></div>
             </div>
