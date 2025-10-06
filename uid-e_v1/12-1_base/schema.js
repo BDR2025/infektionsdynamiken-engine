@@ -7,9 +7,11 @@
  * License:  CC BY 4.0
  *
  * Created:  2025-09-26
- * Updated:  2025-09-26
- * Version:  v1.0.0
+ * Updated:  2025-10-06
+ * Version:  v1.0.1
  * Changelog:
+ *   - v1.0.1 E0 (initial Exposed) in den Parameter-Katalog aufgenommen; Constraint-Kopplung
+ *            ergänzt (E0 ≤ N − I0) in applyCouplings; API und bestehende Kopplungen unverändert.
  *   - v1.0.0 Parameter catalog, normalization and algebraic couplings implemented
  */
 
@@ -23,6 +25,7 @@ export function makeCatalog(model='SIR', mode='school') {
   const base = {
     N:       { min: 1, max: 1e9,   step: 1,      def: 1_000_000 },
     I0:      { min: 0, max: 1e7,   step: 1,      def: 10 },
+    E0:      { min: 0, max: 1e7,   step: 1,      def: 0 },      // NEU: anfängliche Exponierte
     T:       { min: 1, max: 3650,  step: 1,      def: 180 },
     dt:      { min: 0.01, max: 10, step: 0.01,   def: 0.5 },
     R0:      { min: 0.1, max: 10,  step: 0.01,   def: 3.0 },
@@ -100,6 +103,12 @@ export function applyCouplings(p, changedKey) {
     p.L = clamp(1 / p.sigma, 0.000001, 14);
   } else if (changedKey === 'L') {
     p.sigma = clamp(1 / p.L, 0.000001, 5);
+  }
+
+  // NEU: Constraint für Startbestände — E0 ≤ N − I0, nie negativ
+  if (changedKey === 'N' || changedKey === 'I0' || changedKey === 'E0') {
+    const cap = Math.max(0, (p.N ?? 0) - (p.I0 ?? 0));
+    p.E0 = clamp(p.E0 ?? 0, 0, cap);
   }
 
   return p;

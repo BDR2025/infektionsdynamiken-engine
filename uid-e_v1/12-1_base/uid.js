@@ -1,51 +1,54 @@
 /*!
  * File:     /uid-e_v1/12-1_base/uid.js
- * Project:  Understanding Infection Dynamics · Infektionsdynamiken verstehen
+ * Project:  Understanding Infection Dynamics Â· Infektionsdynamiken verstehen
  * Type:     Open Educational Resource (OER)
- * Authors:  B. D. Rausch · A. Heinz
- * Contact:  info@infectiondynamics.eu · info@infektionsdynamiken.de
+ * Authors:  B. D. Rausch Â· A. Heinz
+ * Contact:  info@infectiondynamics.eu Â· info@infektionsdynamiken.de
  * License:  CC BY 4.0
  *
  * Created:  2025-09-26
- * Updated:  2025-09-26
- * Version:  v1.0.2
+ * Updated:  2025-10-06
+ * Version:  v1.0.3
  * Changelog:
+ *   - v1.0.3 E0 in model:update aufgenommen; im Bulk-Pfad zusÃ¤tzliche
+ *            Guard-Constraint (E0 â‰¤ N âˆ’ I0, nie negativ). Einzelkey-Ã„nderungen
+ *            weiter Ã¼ber applyCouplings() abgesichert.
  *   - v1.0.2 Initial Director implementation
- *   - consumes parameter events, applies couplings and normalization
- *   - calls engine and emits model, update, data, status and error events
+ *            - consumes parameter events, applies couplings and normalization
+ *            - calls engine and emits model, update, data, status and error events
  */
 
 // ============================================================================
 // Imports
 // ============================================================================
-// Bus liefert Event-System (nicht verändern, nur über API nutzen)
+// Bus liefert Event-System (nicht verÃ¤ndern, nur Ã¼ber API nutzen)
 import { on, emit } from './bus.js';
 
 // Schema verwaltet Parameterkatalog, Normalisierung und Kopplungen
-// Änderungen nur über makeCatalog/normalizeParams/applyCouplings, 
-// niemals manuell Eingriffe in params-Struktur einfügen
+// Ã„nderungen nur Ã¼ber makeCatalog/normalizeParams/applyCouplings, 
+// niemals manuell Eingriffe in params-Struktur einfÃ¼gen
 import { makeCatalog, normalizeParams, applyCouplings, clamp } from './schema.js';
 
-// Engine führt numerische Berechnung durch (nicht hier verändern)
+// Engine fÃ¼hrt numerische Berechnung durch (nicht hier verÃ¤ndern)
 import { run } from './engine.js';
 
 // ============================================================================
 // Konstanten
 // ============================================================================
-// Integratoren, die für die Engine erlaubt sind
-// Falls neue Verfahren ergänzt werden sollen, hier hinzufügen
+// Integratoren, die fÃ¼r die Engine erlaubt sind
+// Falls neue Verfahren ergÃ¤nzt werden sollen, hier hinzufÃ¼gen
 const INTEGRATORS = new Set(['euler','heun','rk4']);
 
 // ============================================================================
 // Hauptfunktion createUID
 // ============================================================================
 // Initialisiert den Director, verbindet Schema, Engine und Event-Bus
-// Entwickler sollten hier KEINE neue Logik außerhalb der vorgesehenen
-// schedule/recalc-Mechanik ergänzen, um Seiteneffekte zu vermeiden
+// Entwickler sollten hier KEINE neue Logik auÃŸerhalb der vorgesehenen
+// schedule/recalc-Mechanik ergÃ¤nzen, um Seiteneffekte zu vermeiden
 export function createUID(cfg = {}) {
   // --------------------------------------------------------------------------
-  // Kontext: Sprache und Modus aus <html> lesen oder aus cfg übernehmen
-  // Nur falls zwingend nötig, hier Default-Handling ergänzen
+  // Kontext: Sprache und Modus aus <html> lesen oder aus cfg Ã¼bernehmen
+  // Nur falls zwingend nÃ¶tig, hier Default-Handling ergÃ¤nzen
   // --------------------------------------------------------------------------
   const html = (typeof document !== 'undefined')
     ? document.documentElement
@@ -58,14 +61,14 @@ export function createUID(cfg = {}) {
 
   // --------------------------------------------------------------------------
   // Parameterkatalog und Startparameter
-  // Änderungen an den Grenzen oder Defaults immer über schema.js
+  // Ã„nderungen an den Grenzen oder Defaults immer Ã¼ber schema.js
   // --------------------------------------------------------------------------
   const catalog = makeCatalog(model, mode);
   let params = normalizeParams(cfg.params || {}, catalog);
 
   // --------------------------------------------------------------------------
   // READY: Initiale Meldung an das System
-  // Entwickler: Struktur dieses Events nicht verändern, nur erweitern
+  // Entwickler: Struktur dieses Events nicht verÃ¤ndern, nur erweitern
   // --------------------------------------------------------------------------
   emit('uid:e:params:ready', {
     state: { params, meta: { lang: html.lang || 'en', mode, model, driverKey: 'init' } }
@@ -74,7 +77,7 @@ export function createUID(cfg = {}) {
   // ========================================================================
   // Scheduler und Rechenlogik
   // ========================================================================
-  // rAF throttle sorgt dafür, dass viele schnelle Änderungen zusammengefasst
+  // rAF throttle sorgt dafÃ¼r, dass viele schnelle Ã„nderungen zusammengefasst
   // werden. Entwickler sollten schedule() und recalc() nicht umgehen.
   let raf = 0, dirty = false;
 
@@ -83,11 +86,11 @@ export function createUID(cfg = {}) {
 
     // ----------------------------
     // Publiziere normalisierte Parameter
-    // Änderungen an der Struktur dieses Events vermeiden, da viele Module
-    // (Chart, KPI, VectorWheel) darauf hören
+    // Ã„nderungen an der Struktur dieses Events vermeiden, da viele Module
+    // (Chart, KPI, VectorWheel) darauf hÃ¶ren
     // ----------------------------
     emit('uid:e:model:update', {
-      N: params.N, I0: params.I0,
+      N: params.N, I0: params.I0, E0: params.E0,               // â† E0 ergÃ¤nzt
       R0: params.R0, beta: params.beta, gamma: params.gamma, D: params.D,
       sigma: params.sigma, mu: params.mu, nu: params.nu,
       measures: params.measures,
@@ -97,13 +100,13 @@ export function createUID(cfg = {}) {
 
     // ----------------------------
     // Engine berechnen
-    // run() niemals ersetzen, Änderungen an engine.js vornehmen
+    // run() niemals ersetzen, Ã„nderungen an engine.js vornehmen
     // ----------------------------
     const { series, meta, drift } = run({ model, params, integrator });
 
     // ----------------------------
     // Drift-Guard
-    // Toleranzen hier nicht ändern, nur in Absprache, da Stabilität sonst leidet
+    // Toleranzen hier nicht Ã¤ndern, nur in Absprache, da StabilitÃ¤t sonst leidet
     // ----------------------------
     const tol = Math.max(1e-6 * params.N, 1e-3);
     if (!Number.isFinite(drift) || drift > tol) {
@@ -112,7 +115,7 @@ export function createUID(cfg = {}) {
 
     // ----------------------------
     // Publiziere neue Simulationsdaten
-    // Struktur unverändert lassen, Konsistenz mit Chart/KPI/VectorWheel
+    // Struktur unverÃ¤ndert lassen, Konsistenz mit Chart/KPI/VectorWheel
     // ----------------------------
     emit('uid:e:sim:data', { series, N: params.N, dt: params.dt, T: params.T });
   }
@@ -125,14 +128,21 @@ export function createUID(cfg = {}) {
   // ========================================================================
   // Eingehende Parameter-Events
   // ========================================================================
-  // Nur hier dürfen Entwickler Änderungen an Parametern entgegennehmen.
-  // Die interne Parametervalidierung läuft immer über schema.js
+  // Nur hier dÃ¼rfen Entwickler Ã„nderungen an Parametern entgegennehmen.
+  // Die interne Parametervalidierung lÃ¤uft immer Ã¼ber schema.js
   on('uid:e:params:change', (payload) => {
     if (!payload) return;
 
     if (payload.bulk && typeof payload.bulk === 'object') {
+      // Bulk: zunÃ¤chst normalisieren â€¦
       params = normalizeParams({ ...params, ...payload.bulk }, catalog);
+
+      // â€¦ dann Guard-Constraint anwenden (Bulk ruft applyCouplings nicht auf):
+      // E0 darf nicht grÃ¶ÃŸer als N âˆ’ I0 und nie negativ sein.
+      const cap = Math.max(0, (params.N ?? 0) - (params.I0 ?? 0));
+      params.E0 = clamp(params.E0 ?? 0, 0, cap);
     } else if (typeof payload.key === 'string') {
+      // Single-Key: clamp + Kopplungen (inkl. E0-Constraint in applyCouplings)
       const key = payload.key;
       const v = Number(payload.value);
       if (Number.isFinite(v) && catalog[key]) {
@@ -148,8 +158,8 @@ export function createUID(cfg = {}) {
   // ========================================================================
   // Integrator-Wechsel (Hot-Swap)
   // ========================================================================
-  // Entwickler sollten nur neue Integratoren hinzufügen, bestehende Logik 
-  // aber unverändert lassen
+  // Entwickler sollten nur neue Integratoren hinzufÃ¼gen, bestehende Logik 
+  // aber unverÃ¤ndert lassen
   on('uid:e:integrator:set', (payload) => {
     const m = String(payload?.method || payload?.mode || '').toLowerCase();
     if (!INTEGRATORS.has(m)) return;
@@ -168,21 +178,21 @@ export function createUID(cfg = {}) {
   schedule();
 
   // ========================================================================
-  // Öffentliches API
+  // Ã–ffentliches API
   // ========================================================================
-  // Getter liefern Kopien, direkte Mutationen an params außerhalb verbieten
+  // Getter liefern Kopien, direkte Mutationen an params auÃŸerhalb verbieten
   return {
     get model() { return model; },
     get mode() { return mode; },
     get params() { return { ...params }; },
 
-    // Integratorwechsel über API, nur zulässige Verfahren
+    // Integratorwechsel Ã¼ber API, nur zulÃ¤ssige Verfahren
     setIntegrator(m) {
       const mm = String(m||'').toLowerCase();
       if (INTEGRATORS.has(mm)) { integrator = mm; schedule(); }
     },
 
-    // Manuelles Recalc erzwingen, selten nötig
+    // Manuelles Recalc erzwingen, selten nÃ¶tig
     recalc: schedule
   };
 }

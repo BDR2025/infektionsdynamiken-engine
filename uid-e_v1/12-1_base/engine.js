@@ -7,9 +7,11 @@
  * License:  CC BY 4.0
  *
  * Created:  2025-09-21
- * Updated:  2025-09-27
- * Version:  v1.1.1
+ * Updated:  2025-10-06
+ * Version:  v1.1.2
  * Changelog:
+ *   - v1.1.2 SEIR.init berücksichtigt E0 (initial Exposed) und wahrt Massenerhaltung:
+ *            S0 = max(0, N − I0 − E0), E0 = max(0, E0). API und übrige Modelle unverändert.
  *   - v1.1.1 Replaced placeholders with full model + integrator implementations
  *   - v1.1.0 Added SIRV model and improved stabilization
  *   - v1.0.0 Initial core with SIR and SEIR
@@ -46,7 +48,14 @@ const MODELS = {
 
   SEIR: {
     dims: ['S','E','I','R'],
-    init: (p) => [Math.max(0, p.N - p.I0), 0, p.I0, 0],
+    // --- geändert: E0 wird berücksichtigt, Massenerhaltung am Start ---
+    init: (p) => {
+      const N  = Math.max(0, p.N);
+      const I0 = Math.max(0, p.I0);
+      const E0 = Math.max(0, p.E0 || 0);
+      const S0 = Math.max(0, N - I0 - E0);
+      return [S0, E0, I0, 0];
+    },
     deriv: (p, y) => {
       const [S,E,I,R] = y; const N = Math.max(1, p.N);
       const be = p.beta * (1 - Math.max(0, Math.min(1, p.measures || 0)));
