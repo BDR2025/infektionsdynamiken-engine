@@ -1,6 +1,11 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   UID-Explore · Demo 2 · Structural Layer (v2.2 – konsolidiert)
+   UID-Explore · Demo 2 · Structural Layer (v2.3 – cleaned)
    Scope: NUR innerhalb von [data-demo="2"]
+   Änderungen ggü. v2.2:
+   - Entfernt: .widget-header / .widget-title / .widget-controls (Legacy)
+   - Entfernt: .d2-kpi*, .d2-keykpis (nicht genutzt)
+   - Entfernt: .visual-overlay / .mode-chip / .power-chip (Legacy)
+   - Safety-Kill für .widget-header entfernt (HTML bereits bereinigt)
    ────────────────────────────────────────────────────────────────────────── */
 
 /* 0) Tokens/Abstände */
@@ -75,23 +80,6 @@
   box-shadow: var(--shadow-1);
   overflow: clip;
 }
-[data-demo="2"] .widget-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  min-block-size: var(--d2-head-h);
-  padding-inline: var(--d2-pad-lg);
-  border-block-end: 1px solid var(--border);
-}
-[data-demo="2"] .widget-title { font: inherit; line-height: 1.2; }
-[data-demo="2"] .widget-controls { display: inline-flex; gap: 8px; align-items: center; }
-[data-demo="2"] .widget-controls button {
-  appearance: none; border: 1px solid var(--border); background: transparent; color: inherit;
-  padding: 6px 10px; border-radius: 10px; cursor: pointer;
-}
-[data-demo="2"] .widget-controls button:focus-visible {
-  outline: 2px solid var(--ring, currentColor); outline-offset: 2px;
-}
 
 /* Standard-Insets für Widget-Bodies in Demo 2 */
 [data-demo="2"] .widget-body { 
@@ -106,18 +94,6 @@
   overflow: clip; visibility: hidden; pointer-events: none;
 }
 
-/* 5) KPI-Decks stabil */
-[data-demo="2"] .d2-kpi .kpi-deck {
-  display: grid;
-  gap: var(--d2-gap);
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  align-content: start;
-  justify-content: start;
-  margin: 0;
-  min-inline-size: 0;
-}
-[data-demo="2"] .d2-kpi .kpi-deck + .kpi-deck { margin-block-start: var(--d2-gap); }
-
 /* 6) VISUALS: 2-up bei Platz */
 [data-demo="2"] .d2-visuals {
   display: grid;
@@ -131,17 +107,6 @@
 @container (min-width: 620px) { [data-demo="2"] .d2-visuals { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px)   { [data-demo="2"] .d2-visuals { grid-template-columns: 1fr 1fr; } }
 
-/* 7) KEY KPIs: Wrapper-Grid (Sidebar) */
-[data-demo="2"] .d2-keykpis {
-  display: grid;
-  gap: var(--d2-gap);
-  grid-template-columns: 1fr;
-  container-type: inline-size;
-  align-content: start; 
-  align-items: start;
-}
-@container (min-width: 560px) { [data-demo="2"] .d2-keykpis { grid-template-columns: 1fr 1fr; } }
-
 /* 8) Quadratische Visual-Hosts */
 [data-demo="2"] .square-host {
   inline-size: 100%;
@@ -153,11 +118,6 @@
 [data-demo="2"] .square-host > canvas,
 [data-demo="2"] .square-host > svg,
 [data-demo="2"] .square-host > .vis-root { position: absolute; inset: 0; }
-
-/* 9) Interne Visual-Overlays im Demo-Scope aus */
-[data-demo="2"] .widget .visual-overlay,
-[data-demo="2"] .widget .mode-chip,
-[data-demo="2"] .widget .power-chip { display: none !important; }
 
 /* 10) A11y/Defensiv */
 [data-demo="2"] .widget [tabindex]:focus-visible,
@@ -172,34 +132,11 @@
 [data-demo="2"] #chart-host,
 [data-demo="2"] #params-host { min-inline-size: 0; }
 
-/* 11) Live KPI Widget – korrekt kollabieren & sauberes Spaltmaß */
-/* AUS-Zustand: garantiert dicht (kein Restspalt) */
-[data-demo="2"] #kpi-widget.widget.widget-kpi[data-widget-enabled="false"] > .widget-body {
-  display: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-}
-/* EIN-Zustand: obere Luft wie links; Margin-Collapse verhindern */
-[data-demo="2"] #kpi-widget.widget.widget-kpi[data-widget-enabled="true"] > .widget-body {
-  padding-block-start: var(--d2-gap);
-  border-top: 1px solid transparent;
-}
-/* falls erste Zeile/Card doch margin-top hätte → neutralisieren */
-[data-demo="2"] #kpi-widget.widget.widget-kpi > .widget-body > :first-child {
-  margin-block-start: 0;
-}
-
 /* 12) Scope-Containment */
 [data-demo="2"] .widget { contain: style; }
 
 /* ─────────────────────────────────────────────
-   Demo 2 · Key KPI Cards – Grid nach Kriterien
-   Desktop ≥1024px: 2 Spalten
-   Tablet 560–1023px: 3 Spalten
-   Smartphone ≤559px: 2 Spalten
+   Demo 2 · Key KPI Cards – Grid
    ───────────────────────────────────────────── */
 
 /* Basis: immer 2 Spalten (Smartphone + Fallback) */
@@ -222,5 +159,3 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-
-[data-demo="2"] .widget > .widget-header { display:none; block-size:0; padding:0; margin:0; }
