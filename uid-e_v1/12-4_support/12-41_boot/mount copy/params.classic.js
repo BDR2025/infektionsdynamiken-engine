@@ -49,4 +49,4 @@ export async function mountParamsClassic() {
   console.info('[mount-widgets] Params Classic ready');
 }
 
-logVersionAfterReady('mount-widgets', 'Params Classic', new URL('../../../12-2_input/12-21_para/index.js', import.meta.url).href);
+logVersionAfterReady('mount-widgets', 'Params Classic', import.meta.url);

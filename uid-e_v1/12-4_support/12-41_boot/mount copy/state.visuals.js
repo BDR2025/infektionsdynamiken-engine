@@ -83,4 +83,4 @@ export async function mountStateVisuals() {
   console.info('[mount-widgets] State Visuals ready');
 }
 
-logVersionAfterReady('mount-widgets', 'State Visuals', new URL('../../../12-3_presentation/12-35_vt/state visuals/index.js', import.meta.url).href);
+logVersionAfterReady('mount-widgets', 'State Visuals', import.meta.url);

@@ -56,4 +56,4 @@ export async function mountParamsFormulas() {
   console.info('[mount-widgets] Params Formulas ready');
 }
 
-logVersionAfterReady('mount-widgets', 'Params Formulas', new URL('../../../12-2_input/12-21_para/formulas/index.js', import.meta.url).href);
+logVersionAfterReady('mount-widgets', 'Params Formulas', import.meta.url);

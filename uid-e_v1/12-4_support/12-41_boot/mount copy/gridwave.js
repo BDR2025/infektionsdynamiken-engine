@@ -8,11 +8,9 @@
  * License:  CC BY 4.0
  *
  * Created:  2025-10-04
- * Updated:  2025-10-06
- * Version:  1.0.4
+ * Updated:  2025-10-05
+ * Version:  1.0.3
  * Changelog:
- *   - v1.0.4  Robustheit: Initial-Rehydrate bei ON (rehydrateWidget) direkt nach Mount,
- *             damit GridWave sofort Daten hat – unabhängig von SV/Transitions.
  *   - v1.0.3  Korrekte VT-Pfade mit Leerzeichen (grid%20wave) + toleranter Fallback (kein Crash).
  *   - v1.0.2  Loader mit Fallbacks auf neue VT-Struktur (12-35_vt/gridwave/*).
  *   - v1.0.1  Pfade auf neue VT-Struktur (12-35_vt/gridwave) korrigiert.
@@ -22,7 +20,7 @@
 'use strict';
 
 import { attachWidgetHeader } from '/uid-e_v1/12-4_support/12-42_widgets/index.js';
-import { attachAutoRehydrate, DEFAULT_EXPLORE_EVENTS, rehydrateWidget } from '/uid-e_v1/12-4_support/12-42_widgets/rehydrate.js';
+import { attachAutoRehydrate, DEFAULT_EXPLORE_EVENTS } from '/uid-e_v1/12-4_support/12-42_widgets/rehydrate.js';
 import { initRehydrate }      from '/uid-e_v1/12-4_support/12-41_boot/rehydrate/core.js';
 import * as EBUS              from '../../../12-1_base/bus.js';
 import { logVersionAfterReady } from '../qa/log.js';
@@ -80,14 +78,6 @@ export async function mountGridWave() {
 
   attachAutoRehydrate(host, EBUS, DEFAULT_EXPLORE_EVENTS, header);
 
-  // NEU: Falls beim Mount bereits ON → sofortiger Rehydrate-Kick
-  try {
-    const isOn = (host?.dataset?.widgetEnabled ?? 'true') !== 'false';
-    if (isOn) {
-      rehydrateWidget(EBUS, DEFAULT_EXPLORE_EVENTS);
-    }
-  } catch {}
-
   // Widget laden (neue VT-Struktur)
   const mountGridWidget = await loadMountGridWidget();
   const apiGW = mountGridWidget({
@@ -110,4 +100,4 @@ export async function mountGridWave() {
   console.info('[mount-widgets] GridWave ready');
 }
 
-logVersionAfterReady('mount-widgets', 'GridWave', new URL('../../../12-3_presentation/12-35_vt/grid wave/index.js', import.meta.url).href);
+logVersionAfterReady('mount-widgets', 'GridWave', import.meta.url);

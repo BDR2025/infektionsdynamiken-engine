@@ -67,4 +67,4 @@ export async function mountKPIKey() {
   console.info('[mount-widgets] Key KPI ready');
 }
 
-logVersionAfterReady('mount-widgets', 'Key KPI', new URL('../../../12-3_presentation/12-33_kpi/key/renderer.js', import.meta.url).href);
+logVersionAfterReady('mount-widgets', 'Key KPI', import.meta.url);

@@ -55,4 +55,4 @@ export async function mountChart() {
   console.info('[mount-widgets] Chart ready');
 }
 
-logVersionAfterReady('mount-widgets', 'Chart', new URL('../../../12-3_presentation/12-31_chart/index.js', import.meta.url).href);
+logVersionAfterReady('mount-widgets', 'Chart', import.meta.url);

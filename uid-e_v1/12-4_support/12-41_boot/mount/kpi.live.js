@@ -32,6 +32,8 @@ import { initRehydrate }      from '/uid-e_v1/12-4_support/12-41_boot/rehydrate/
 import { mountKPI }           from '/uid-e_v1/12-3_presentation/12-33_kpi/index.js';
 import { mountKPIActions }    from '/uid-e_v1/12-3_presentation/12-33_kpi/kpi.widget-actions.js';
 import * as EBUS              from '../../../12-1_base/bus.js';
+import { logVersionAfterReady } from '../qa/log.js';
+
 
 function oneHeader(host, title) {
   try {
@@ -65,3 +67,5 @@ export async function mountKPILive() {
 
   console.info('[mount-widgets] KPI ready');
 }
+
+logVersionAfterReady('mount-widgets', 'KPI', new URL('../../../12-3_presentation/12-33_kpi/bridge.js', import.meta.url).href);
