@@ -8,9 +8,11 @@
  * License:  CC BY 4.0
  *
  * Created:  2025-10-04
- * Updated:  2025-10-04
- * Version:  1.0.0
+ * Updated:  2025-10-06
+ * Version:  1.0.1
  * Changelog:
+ *   - v1.0.1  EA-Startzustand LEQ: defaultEnabled=false; neuer Storage-Key (:ea1);
+ *             erzwungenes Öffnen im Mount entfernt (kein FOUC, kein Doppel-Klick-Effekt).
  *   - v1.0.0  Erstes Commit: LEQ-Mount über App-Shims; Adopt-Fallback; Rehydrate.
  *
  * eAnnotation:
@@ -31,6 +33,7 @@ import { attachAutoRehydrate, DEFAULT_EXPLORE_EVENTS } from '/uid-e_v1/12-4_supp
 import { initRehydrate }      from '/uid-e_v1/12-4_support/12-41_boot/rehydrate/core.js';
 import { initMathJax }        from '/uid-e_v1/12-4_support/12-44_js/uid-mathjax.js';
 import * as EBUS              from '../../../12-1_base/bus.js';
+import { logVersionAfterReady } from '../qa/log.js';
 
 const MJ_READY = initMathJax();
 
@@ -56,10 +59,11 @@ export async function mountLEQ() {
   const eqHost = document.getElementById('core-equation');
   if (!host || !eqHost) return;
 
+  // EA-Policy: Start geschlossen + neutralisierte Persistenz (neuer Key)
   const { header } = attachWidgetHeader(host, {
     title: 'Kern-Gleichung',
-    storageKey: 'uid:d2:eq:enabled',
-    defaultEnabled: true
+    storageKey: 'uid:d2:eq:enabled:ea1',
+    defaultEnabled: false
   });
 
   attachAutoRehydrate(host, EBUS, DEFAULT_EXPLORE_EVENTS, header);
@@ -80,10 +84,11 @@ export async function mountLEQ() {
 
   const W = adoptInto(eqHost);
   if (W) {
-    host.dataset.widgetEnabled = 'true';
-    host.removeAttribute('hidden');
+    // Wichtig: Kein erzwungenes Öffnen mehr – Offen/Zu entscheidet ausschließlich der Header.
+    // (entfernt) host.dataset.widgetEnabled = 'true';
+    // (entfernt) host.removeAttribute('hidden');
 
-    // Defaults
+    // Defaults (nur interne Anzeigepräferenzen, unabhängig vom Offen/Zu-State)
     W.classList.remove('is-white');
     W.querySelector('.ceq-mode [data-mode="color"]')?.click();
     W.querySelector('.ceq-did  [data-did="pulse"]')?.click();
@@ -103,3 +108,5 @@ export async function mountLEQ() {
     console.warn('[LEQ] Keine Instanz im DOM nach Import/Adopt');
   }
 }
+
+logVersionAfterReady('mount-widgets', 'LEQ', new URL('../../../12-3_presentation/12-34_leq/index.js', import.meta.url).href);
