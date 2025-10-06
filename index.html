@@ -7,8 +7,9 @@
     License:   CC BY 4.0
 
     Updated:   2025-10-06
-    Version:   1.5.3
+    Version:   1.5.4
     Changelog:
+      - v1.5.4  LEQ startet geschlossen: data-widget-enabled auf <article id="core-equation-widget"> = false (FOUC verhindert, konsistent mit EA-Policy).
       - v1.5.3  Gemeinsame .page-Hülle für Header + Main; HTML-Hygiene & Einrückungen.
       - v1.5.2  Early-Access Header & Banner statisch integriert; /early-access/early-access.css verlinkt.
       - v1.5.1  Legacy-Header <header.widget-header> entfernt; Collapse-Adjazenz über .uidw-header sichergestellt.
@@ -132,7 +133,7 @@
 
           <!-- LEQ (Living Equation) -->
           <section id="app-leq" data-widget="leq">
-            <article id="core-equation-widget" class="widget" data-widget-enabled="true" data-experimental="true">
+            <article id="core-equation-widget" class="widget" data-widget-enabled="false" data-experimental="true">
               <div class="widget-body">
                 <div id="core-equation" data-widget-id="core-equation"></div>
               </div>
