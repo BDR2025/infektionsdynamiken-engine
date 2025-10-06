@@ -1,0 +1,225 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   UID-Explore · Demo 2 · Structural Layer (v2.2 – konsolidiert)
+   Scope: NUR innerhalb von [data-demo="2"]
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* 0) Tokens/Abstände */
+[data-demo="2"] {
+  --d2-gap:        clamp(12px, 1.2vw, 16px);
+  --d2-gap-lg:     clamp(16px, 1.6vw, 24px);
+  --d2-pad:        clamp(10px, 1.0vw, 14px);
+  --d2-pad-lg:     clamp(12px, 1.2vw, 18px);
+  --d2-page-pad:   clamp(12px, 2vw, 24px);
+  --d2-radius:     14px;
+  --d2-head-h:     44px;
+  --d2-max-width:  1280px;
+  box-sizing: border-box;
+}
+[data-demo="2"] *, [data-demo="2"] *::before, [data-demo="2"] *::after { box-sizing: inherit; }
+
+/* 1) Hauptcontainer */
+[data-demo="2"].d2-grid {
+  inline-size: 100%;
+  max-inline-size: var(--d2-max-width);
+  margin-inline: auto;
+  padding: var(--d2-page-pad);
+  overflow-x: clip;
+
+  display: grid;
+  gap: var(--d2-gap-lg);
+  grid-auto-rows: min-content;
+
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "left"
+    "right";
+}
+
+/* iPad / Portrait: 2 Spalten gleich breit */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  [data-demo="2"].d2-grid {
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas: "left right";
+  }
+}
+
+/* Desktop: 2fr / 1fr */
+@media (min-width: 1024px) {
+  [data-demo="2"].d2-grid {
+    grid-template-columns: minmax(0,2fr) minmax(0,1fr);
+    grid-template-areas: "left right";
+  }
+}
+
+/* 2) Areas */
+[data-demo="2"] .d2-left  { grid-area: left;  min-inline-size: 0; }
+[data-demo="2"] .d2-right { grid-area: right; min-inline-size: 0; }
+
+/* 3) Spalten-Wrapper (entkoppelte Flows) */
+[data-demo="2"] .d2-left,
+[data-demo="2"] .d2-right {
+  display: grid;
+  gap: var(--d2-gap-lg);
+  grid-auto-rows: min-content;
+  align-content: start;
+  align-items: start;
+}
+
+/* 4) Widgets – Hülle */
+[data-demo="2"] .widget {
+  inline-size: 100%;
+  background: var(--panel);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--d2-radius);
+  box-shadow: var(--shadow-1);
+  overflow: clip;
+}
+[data-demo="2"] .widget-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  min-block-size: var(--d2-head-h);
+  padding-inline: var(--d2-pad-lg);
+  border-block-end: 1px solid var(--border);
+}
+[data-demo="2"] .widget-title { font: inherit; line-height: 1.2; }
+[data-demo="2"] .widget-controls { display: inline-flex; gap: 8px; align-items: center; }
+[data-demo="2"] .widget-controls button {
+  appearance: none; border: 1px solid var(--border); background: transparent; color: inherit;
+  padding: 6px 10px; border-radius: 10px; cursor: pointer;
+}
+[data-demo="2"] .widget-controls button:focus-visible {
+  outline: 2px solid var(--ring, currentColor); outline-offset: 2px;
+}
+
+/* Standard-Insets für Widget-Bodies in Demo 2 */
+[data-demo="2"] .widget-body { 
+  padding: var(--d2-pad-lg);
+  min-inline-size: 0;
+  contain: layout paint;
+}
+
+/* Collapse (generisch) */
+[data-demo="2"] .widget[data-widget-enabled="false"] .widget-body {
+  block-size: 0; padding: 0; margin: 0; border: 0;
+  overflow: clip; visibility: hidden; pointer-events: none;
+}
+
+/* 5) KPI-Decks stabil */
+[data-demo="2"] .d2-kpi .kpi-deck {
+  display: grid;
+  gap: var(--d2-gap);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  align-content: start;
+  justify-content: start;
+  margin: 0;
+  min-inline-size: 0;
+}
+[data-demo="2"] .d2-kpi .kpi-deck + .kpi-deck { margin-block-start: var(--d2-gap); }
+
+/* 6) VISUALS: 2-up bei Platz */
+[data-demo="2"] .d2-visuals {
+  display: grid;
+  gap: var(--d2-gap);
+  grid-template-columns: 1fr;
+  container-type: inline-size;
+  align-items: start; 
+  align-content: start;
+}
+[data-demo="2"] .d2-visuals > .widget { align-self: start; }
+@container (min-width: 620px) { [data-demo="2"] .d2-visuals { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px)   { [data-demo="2"] .d2-visuals { grid-template-columns: 1fr 1fr; } }
+
+/* 7) KEY KPIs: Wrapper-Grid (Sidebar) */
+[data-demo="2"] .d2-keykpis {
+  display: grid;
+  gap: var(--d2-gap);
+  grid-template-columns: 1fr;
+  container-type: inline-size;
+  align-content: start; 
+  align-items: start;
+}
+@container (min-width: 560px) { [data-demo="2"] .d2-keykpis { grid-template-columns: 1fr 1fr; } }
+
+/* 8) Quadratische Visual-Hosts */
+[data-demo="2"] .square-host {
+  inline-size: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  position: relative;
+  min-inline-size: 0;
+}
+[data-demo="2"] .square-host > canvas,
+[data-demo="2"] .square-host > svg,
+[data-demo="2"] .square-host > .vis-root { position: absolute; inset: 0; }
+
+/* 9) Interne Visual-Overlays im Demo-Scope aus */
+[data-demo="2"] .widget .visual-overlay,
+[data-demo="2"] .widget .mode-chip,
+[data-demo="2"] .widget .power-chip { display: none !important; }
+
+/* 10) A11y/Defensiv */
+[data-demo="2"] .widget [tabindex]:focus-visible,
+[data-demo="2"] .widget button:focus-visible,
+[data-demo="2"] .widget a:focus-visible {
+  outline: 2px solid var(--ring, currentColor); outline-offset: 2px;
+}
+[data-demo="2"] img, [data-demo="2"] canvas, [data-demo="2"] svg {
+  max-inline-size: 100%; block-size: auto;
+}
+[data-demo="2"] .kpi-deck,
+[data-demo="2"] #chart-host,
+[data-demo="2"] #params-host { min-inline-size: 0; }
+
+/* 11) Live KPI Widget – korrekt kollabieren & sauberes Spaltmaß */
+/* AUS-Zustand: garantiert dicht (kein Restspalt) */
+[data-demo="2"] #kpi-widget.widget.widget-kpi[data-widget-enabled="false"] > .widget-body {
+  display: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+/* EIN-Zustand: obere Luft wie links; Margin-Collapse verhindern */
+[data-demo="2"] #kpi-widget.widget.widget-kpi[data-widget-enabled="true"] > .widget-body {
+  padding-block-start: var(--d2-gap);
+  border-top: 1px solid transparent;
+}
+/* falls erste Zeile/Card doch margin-top hätte → neutralisieren */
+[data-demo="2"] #kpi-widget.widget.widget-kpi > .widget-body > :first-child {
+  margin-block-start: 0;
+}
+
+/* 12) Scope-Containment */
+[data-demo="2"] .widget { contain: style; }
+
+/* ─────────────────────────────────────────────
+   Demo 2 · Key KPI Cards – Grid nach Kriterien
+   Desktop ≥1024px: 2 Spalten
+   Tablet 560–1023px: 3 Spalten
+   Smartphone ≤559px: 2 Spalten
+   ───────────────────────────────────────────── */
+
+/* Basis: immer 2 Spalten (Smartphone + Fallback) */
+[data-demo="2"] #kpi-static.kpi-deck {
+  display: grid;
+  gap: var(--d2-gap, 12px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Tablet: 3 Spalten */
+@container (min-width: 560px) and (max-width: 1023.98px) {
+  [data-demo="2"] #kpi-static.kpi-deck {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: 2 Spalten */
+@container (min-width: 1024px) {
+  [data-demo="2"] #kpi-static.kpi-deck {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+

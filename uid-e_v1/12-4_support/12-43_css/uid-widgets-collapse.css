@@ -1,0 +1,76 @@
+/*!
+ * uid-widgets-collapse.css · v1.4.0 (2025-09-29)
+ * Konsolidiert:
+ *  - Bestehender Collapse für State Visuals (#vt-host) & GridWave (#gw-host) via data-* des Moduls
+ *  - Neuer generischer Mini-Collapse über das Widget-Attribut data-collapse="mini"
+ *    (nutzt data-widget-enabled vom Widget-Header und lässt einen Slot im Body sichtbar)
+ */
+
+/* Globale Defaults */
+:root {
+  /* für VT/GW (dein bisheriger Wert) */
+  --uid-widget-collapsed-h: 56px;
+  /* für Mini-Collapse (Simulation o.ä.) – pro Widget überschreibbar */
+  --uid-widget-mini-h: 56px;
+}
+
+/* ------------------------------------------------------------------ */
+/* 1) BESTEHEND: Collapse per Modul-Flag (VT & GW)                     */
+/* ------------------------------------------------------------------ */
+
+#vt-host[data-v-enabled="false"],
+#gw-host[data-gw-enabled="false"]{
+  aspect-ratio: auto !important;
+  height: var(--uid-widget-collapsed-h) !important;
+  min-height: var(--uid-widget-collapsed-h) !important;
+}
+
+#vt-host[data-v-enabled="true"],
+#gw-host[data-gw-enabled="true"]{
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+/* Placeholders grundsätzlich ausblenden – Toolbar dient als Header */
+#vt-host .uidv-placeholder,
+#gw-host .uidg-gw-placeholder,
+#gw-host .uidg-placeholder { display: none !important; }
+
+/* Collapsed-Header: nur Titel links + Power rechts */
+#vt-host[data-v-enabled="false"] .uidg-overlay,
+#gw-host[data-gw-enabled="false"] .uidg-overlay {
+  justify-content:space-between; align-items:center;
+}
+#vt-host[data-v-enabled="false"] .uidg-overlay .uidg-btn:not(.uidg-power),
+#gw-host[data-gw-enabled="false"] .uidg-overlay .uidg-btn:not(.uidg-power) {
+  display:none !important;
+}
+#vt-host[data-v-enabled="false"] .uidg-overlay .uidg-title,
+#gw-host[data-gw-enabled="false"] .uidg-overlay .uidg-title {
+  display:block;
+}
+
+/* ------------------------------------------------------------------ */
+/* 2) NEU: Generischer MINI-COLLAPSE über Widget-Attribut              */
+/*     Gilt für jedes .widget mit data-collapse="mini"                 */
+/*     → nutzt data-widget-enabled des Widget-Headers                  */
+/*     → zeigt im Body NUR .uidw-collapsed                             */
+/* ------------------------------------------------------------------ */
+
+.widget[data-collapse="mini"][data-widget-enabled="false"][data-wid] .widget-body{
+  min-height: var(--uid-widget-mini-h, 56px) !important;
+  height:     var(--uid-widget-mini-h, 56px) !important;
+  max-height: var(--uid-widget-mini-h, 56px) !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  overflow:hidden !important;
+}
+
+/* Im Mini-Zustand nur einen definierten Slot zeigen */
+.widget[data-collapse="mini"][data-widget-enabled="false"][data-wid] .widget-body > *{
+  display:none !important;
+}
+.widget[data-collapse="mini"][data-widget-enabled="false"][data-wid] .widget-body > .uidw-collapsed{
+  display:block !important;
+}
