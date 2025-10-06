@@ -223,3 +223,4 @@
   }
 }
 
+[data-demo="2"] .widget > .widget-header { display:none; block-size:0; padding:0; margin:0; }
