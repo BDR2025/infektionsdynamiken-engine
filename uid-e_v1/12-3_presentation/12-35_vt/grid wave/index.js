@@ -8,14 +8,17 @@
  * License:  CC BY 4.0
  *
  * Created:  2025-10-01
- * Updated:  2025-10-03
- * Version:  1.4.2
+ * Updated:  2025-10-06
+ * Version:  1.4.4
  * Changelog:
- *   - v1.4.2  Sicherer First-Frame nach Enable: ruft wiring.resume() auf, wenn Widget aktiv ist,
- *             auch wenn wiring asynchron nachträglich geladen wird. Rehydrate erfolgt über wiring v1.0.2.
- *             Keine direkten sim:pointer-Emits aus dem Widget; nur Params/Actions.
- *   - v1.4.1  setMode() aktualisiert lokale Mode-Variable (ARIA/Segmented fix).
- *             actionsBus.emit() setzt default source:'wa' (ohne vorhandene zu überschreiben).
+ *   - v1.4.4  Robuster Start: Nach wiring.resume() IMMER ein Kick (timeline:set) – sowohl bei
+ *             async Wiring-Ready als auch bei Header-Resume (setEnabled(true)). Kick nimmt t
+ *             aus dem letzten Pointer (falls vorhanden), sonst t:0. Dadurch kein Warten mehr
+ *             auf SV-Impulse oder UI-Aktionen.
+ *   - v1.4.3  Robustheit: Nach async Wiring-Ready und Header=ON → wiring.resume()
+ *             und, falls keine Stickies vorhanden sind, sanfter Kick via timeline:set.
+ *   - v1.4.2  Sicherer First-Frame nach Enable: wiring.resume() wenn Widget aktiv ist.
+ *   - v1.4.1  setMode(): lokale Mode-Variable aktualisiert; actionsBus.emit(): default source:'wa'.
  */
 
 import { createGridWave } from './gridwave.js';
@@ -52,6 +55,16 @@ export function mountGridWidget({
     dotRatio: ratio
   });
 
+  // -------------------- Hilfsfunktion: sicherer Kick --------------------
+  function kickTimeline(source) {
+    try {
+      const lastPtr = bus?.getLast?.('uid:e:sim:pointer');
+      const t = (lastPtr && typeof lastPtr.idx === 'number') ? lastPtr.idx : 0;
+      // Ein einziger sanfter Kick reicht; Engine emittiert daraufhin aktuelle Series/Pointer
+      bus?.emit?.('uid:e:timeline:set', { t, source });
+    } catch {}
+  }
+
   // -------------------- Gemeinsames Wiring laden --------------------
   let wiring = null;
   (async () => {
@@ -73,7 +86,14 @@ export function mountGridWidget({
         const widgetEl = el.closest('.widget') || el;
         const isOn = (widgetEl?.dataset?.widgetEnabled ?? 'true') !== 'false';
         try {
-          if (isOn) { wiring?.resume?.(); } else { wiring?.pause?.(); }
+          if (isOn) {
+            wiring?.resume?.();
+            // NEU (unbedingt): frischer Kick, unabhängig davon, ob Stickies vorhanden sind
+            // damit GW IMMER unmittelbar Daten bekommt.
+            kickTimeline('gw:wiring');
+          } else {
+            wiring?.pause?.();
+          }
         } catch {}
       }
     } catch (e) {
@@ -110,8 +130,13 @@ export function mountGridWidget({
     if (cv) cv.style.display = on ? '' : 'none';
 
     try {
-      if (!on) { wiring?.pause?.(); }
-      else     { wiring?.resume?.(); } // resume() triggert rehydrate in wiring v1.0.2
+      if (!on) {
+        wiring?.pause?.();
+      } else {
+        wiring?.resume?.();
+        // NEU (unbedingt): Immer ein Kick nach Resume – kein Warten auf SV/Actions.
+        kickTimeline('gw:resume');
+      }
     } catch {}
   }
 
@@ -149,7 +174,7 @@ export function mountGridWidget({
     const next = String(m || 'hybrid').toLowerCase();
     try { gw.setMode?.(next); } catch {}
     try { localStorage.setItem(K_MODE, next); } catch {}
-    mode = next; // ARIA/Segmented: getMode() liefert sofort den neuen Wert
+    mode = next;
   }
   function getMode() { return gw.getMode?.() || mode; }
 
