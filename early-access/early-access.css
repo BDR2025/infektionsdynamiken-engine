@@ -195,3 +195,42 @@
   }
   .ea-header:not(:has(.ea-controls)) .ea-nav { flex: 1 1 auto; justify-content: center; }
 }
+
+/* Experimental-Chip: nur für Widgets mit data-experimental */
+.widget[data-experimental] .widget-body{
+  position: relative;            /* Anker für den Chip */
+  container-type: inline-size;   /* für responsives Schrumpfen nur hier */
+  /* optional: etwas Luft nach oben, falls Inhalt zu dicht steht */
+  --exp-chip-clearance: 0px;     /* bei Bedarf z.B. 8px setzen */
+  padding-top: calc(var(--d2-pad-lg, 16px) + var(--exp-chip-clearance));
+}
+
+.widget[data-experimental] .widget-body::after{
+  content: "Tech Preview";
+  position: absolute;
+  top: 8px; right: 12px;
+  z-index: 3;
+  padding: 4px 10px;
+  font: 600 12px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  letter-spacing: .02em;
+
+  /* Farben aus Tokens – Exposed/Orange */
+  --exp-bg: var(--c-e, #f59e0b);
+  --exp-fg: #0b1b2d;
+  background: var(--exp-bg);
+  color: var(--exp-fg);
+  border: 1px solid color-mix(in srgb, var(--exp-bg) 65%, black 35%);
+
+  border-radius: 999px;
+  box-shadow: var(--shadow-1, 0 2px 8px rgba(0,0,0,.2));
+  pointer-events: none; /* stört niemals Interaktionen */
+}
+
+/* kompakter auf schmalen Widgets */
+@container (max-width: 420px){
+  .widget[data-experimental] .widget-body::after{
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+}
+

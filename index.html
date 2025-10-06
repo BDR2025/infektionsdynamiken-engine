@@ -19,7 +19,7 @@
       - v1.4.0  Widget-Hosts ergänzt (chart/kpi/gridwave/state visuals/params/formulas/leq).
       - v1.3.0  Import-Map in <head> + Preloads + Favicon-Stub.
   -->
-  <head>
+ <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>UID-Engine</title>
@@ -48,7 +48,7 @@
     <link rel="icon" href="data:,">
   </head>
   <body>
-    <!-- Gemeinsame Seitenhülle: sorgt für identische Max-Breite & Side-Pads -->
+    <!-- Gemeinsame Seitenhülle: identische Max-Breite & Side-Pads für Header + Main -->
     <div class="page">
       <!-- Early-Access Header (Landing-Look, statisch) -->
       <header class="ea-wrap" role="banner" aria-label="Seitentitel & Navigation">
@@ -132,7 +132,7 @@
 
           <!-- LEQ (Living Equation) -->
           <section id="app-leq" data-widget="leq">
-            <article id="core-equation-widget" class="widget" data-widget-enabled="true">
+            <article id="core-equation-widget" class="widget" data-widget-enabled="true" data-experimental="true">
               <div class="widget-body">
                 <div id="core-equation" data-widget-id="core-equation"></div>
               </div>
