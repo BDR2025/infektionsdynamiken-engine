@@ -7,8 +7,9 @@
     License:   CC BY 4.0
 
     Updated:   2025-10-06
-    Version:   1.5.2
+    Version:   1.5.3
     Changelog:
+      - v1.5.3  Gemeinsame .page-Hülle für Header + Main; HTML-Hygiene & Einrückungen.
       - v1.5.2  Early-Access Header & Banner statisch integriert; /early-access/early-access.css verlinkt.
       - v1.5.1  Legacy-Header <header.widget-header> entfernt; Collapse-Adjazenz über .uidw-header sichergestellt.
       - v1.5.0  Demo-2-Layout reaktiviert: d2-grid, d2-left/right, data-widget-enabled auf <article>, demo2.css eingebunden.
@@ -40,143 +41,144 @@
     <!-- Preloads: Hot-Path-Module & MathJax (lokal, performance-first) -->
     <link rel="modulepreload" href="/uid-e_v1/12-4_support/12-41_boot/index.js" />
     <link rel="modulepreload" href="/uid-e_v1/12-1_base/index.js" />
-    <!-- MathJax-Wrapper (ESM) – wird von Modulen importiert (z. B. params.formulas.js) -->
     <link rel="modulepreload" href="/uid-e_v1/12-4_support/12-44_js/uid-mathjax.js" />
-    <!-- Aggregator-Build, klassisches Script – vom Wrapper dynamisch geladen -->
     <link rel="preload" as="script" href="/uid-e_v1/12-4_support/12-44_js/tex-chtml-full.js" />
 
     <!-- Favicon-Stub (unterdrückt 404) -->
     <link rel="icon" href="data:,">
   </head>
   <body>
-
-    <!-- Early-Access Header (Landing-Look, statisch) -->
-<header class="ea-wrap" role="banner" aria-label="Seitentitel & Navigation">
-  <div class="ea-header">
-    <!-- Brand -->
-    <div class="ea-brand">
-      <div class="ea-logo" aria-hidden="true">ID</div>
-      <div class="ea-titles">
-        <div class="ea-title">Infektionsdynamiken verstehen</div>
-        <div class="ea-sub">UID-Explore Engine v1 · Early Access</div>
-      </div>
-    </div>
-
-    <!-- Nav zentriert -->
-    <nav class="ea-nav" aria-label="Navigation">
-      <a class="ea-link" href="https://infektionsdynamiken.de" target="_blank" rel="noopener">Landing</a>
-      <a class="ea-link" href="https://repository.infektionsdynamiken.de" target="_blank" rel="noopener">Repository</a>
-      <a class="ea-link" href="https://infektionsdynamiken.de/#legal" target="_blank" rel="noopener">Rechtliches</a>
-    </nav>
-
-    <!-- Controls rechts (ausgegraut, ohne Funktion) -->
-    <div class="ea-controls">
-      <span class="ea-chip is-disabled" aria-disabled="true" title="Modusumschalter kommt später">S</span>
-      <span class="ea-chip is-disabled" aria-disabled="true" title="Modusumschalter kommt später">U</span>
-      <span class="ea-icon is-disabled" aria-disabled="true" title="Sprache folgt">🌐</span>
-    </div>
-  </div>
-
-  <!-- Banner: wähle theme-s (grün) oder theme-e (gelb) -->
-  <div class="ea-banner theme-e" role="status" aria-live="polite">
-    <strong>Early Access</strong> — Öffentliche Vorschau. Diese Demo zeigt den aktuellen Arbeitsstand der UID-Engine.
-    Funktionen & Performance entwickeln sich noch. <a href="mailto:info@infektionsdynamiken.de">Feedback</a> willkommen.
-  </div>
-</header>
-
-
-    <!-- Demo-2 Scope & Grid aktivieren -->
-    <main id="app" class="d2-grid" data-demo="2">
-
-      <!-- LINKE SPALTE (Chart → KPI → State Visuals → GridWave → LEQ) -->
-      <div class="d2-left">
-        <!-- CHART -->
-        <section id="app-chart" data-widget="chart">
-          <article id="chart-widget" class="widget widget-chart" data-widget-enabled="true">
-            <div class="widget-body">
-              <div id="chart-host" aria-label="Chart"></div>
+    <!-- Gemeinsame Seitenhülle: sorgt für identische Max-Breite & Side-Pads -->
+    <div class="page">
+      <!-- Early-Access Header (Landing-Look, statisch) -->
+      <header class="ea-wrap" role="banner" aria-label="Seitentitel & Navigation">
+        <div class="ea-header">
+          <!-- Brand -->
+          <div class="ea-brand">
+            <div class="ea-logo" aria-hidden="true">ID</div>
+            <div class="ea-titles">
+              <div class="ea-title">Infektionsdynamiken verstehen</div>
+              <div class="ea-sub">UID-Explore Engine v1 · Early Access</div>
             </div>
-          </article>
-        </section>
+          </div>
 
-        <!-- KPI (kompartimente + live) – Styling per JS; kein KPI-CSS -->
-        <section id="app-kpi" data-widget="kpi">
-          <article id="kpi-widget" class="widget widget-kpi" data-widget-enabled="true">
-            <div class="widget-body">
-              <div id="kpi-comp" class="kpi-deck" aria-label="KPIs (Kompartimente)"></div>
-              <div id="kpi-live" class="kpi-deck" aria-label="KPIs (live)"></div>
-            </div>
-          </article>
-        </section>
+          <!-- Nav zentriert -->
+          <nav class="ea-nav" aria-label="Navigation">
+            <a class="ea-link ea-link-landing" href="https://infektionsdynamiken.de" target="_blank" rel="noopener noreferrer">Landing</a>
+            <a class="ea-link ea-link-repo" href="https://repository.infektionsdynamiken.de" target="_blank" rel="noopener noreferrer">Repository</a>
+            <a class="ea-link ea-link-legal" href="https://infektionsdynamiken.de/#legal" target="_blank" rel="noopener noreferrer">Rechtliches</a>
+          </nav>
 
-        <!-- VISUAL TOOLS (State Visuals + GridWave) -->
-        <section id="app-vt" data-widget="vt">
-          <section class="d2-visuals">
-            <!-- State Visuals -->
-            <article id="sv-widget" class="widget" data-widget-enabled="true">
+          <!-- Controls rechts (ausgegraut, ohne Funktion) -->
+          <div class="ea-controls">
+            <span class="ea-chip is-disabled" aria-disabled="true" title="Modusumschalter kommt später">S</span>
+            <span class="ea-chip is-disabled" aria-disabled="true" title="Modusumschalter kommt später">U</span>
+            <span class="ea-icon is-disabled" aria-disabled="true" title="Sprache folgt">🌐</span>
+          </div>
+        </div>
+
+        <!-- Banner: wähle theme-s (grün) oder theme-e (gelb) -->
+        <div class="ea-banner theme-e" role="status" aria-live="polite">
+          <strong>Early Access</strong> — Öffentliche Vorschau. Diese Demo zeigt den aktuellen Arbeitsstand der UID-Engine.
+          Funktionen &amp; Performance entwickeln sich noch. <a href="mailto:info@infektionsdynamiken.de">Feedback</a> willkommen.
+        </div>
+      </header>
+
+      <!-- App-Shell -->
+      <main id="app" class="d2-grid" data-demo="2">
+        <!-- LINKE SPALTE (Chart → KPI → State Visuals → GridWave → LEQ) -->
+        <div class="d2-left">
+          <!-- CHART -->
+          <section id="app-chart" data-widget="chart">
+            <article id="chart-widget" class="widget widget-chart" data-widget-enabled="true">
               <div class="widget-body">
-                <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
-                <!-- optionaler Legacy-Host, falls alte Module ihn suchen -->
-                <div id="vt-host" class="square-host" hidden></div>
-              </div>
-            </article>
-
-            <!-- GridWave -->
-            <article id="gw-widget" class="widget" data-widget-enabled="true">
-              <div class="widget-body">
-                <div id="gw-host" class="square-host" aria-label="GridWave">
-                  <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
-                </div>
+                <div id="chart-host" aria-label="Chart"></div>
               </div>
             </article>
           </section>
-        </section>
 
-        <!-- LEQ (Living Equation) -->
-        <section id="app-leq" data-widget="leq">
-          <article id="core-equation-widget" class="widget" data-widget-enabled="true">
-            <div class="widget-body">
-              <div id="core-equation" data-widget-id="core-equation"></div>
-            </div>
-          </article>
-        </section>
-      </div>
+          <!-- KPI (kompartimente + live) – Styling per JS; kein KPI-CSS -->
+          <section id="app-kpi" data-widget="kpi">
+            <article id="kpi-widget" class="widget widget-kpi" data-widget-enabled="true">
+              <div class="widget-body">
+                <div id="kpi-comp" class="kpi-deck" aria-label="KPIs (Kompartimente)"></div>
+                <div id="kpi-live" class="kpi-deck" aria-label="KPIs (live)"></div>
+              </div>
+            </article>
+          </section>
 
-      <!-- RECHTE SPALTE (Params klassisch → Formeln → Key KPIs) -->
-      <div class="d2-right">
-        <!-- PARAMS (klassisch) -->
-        <section id="app-params" data-widget="params">
-          <article id="params-widget" class="widget" data-widget-enabled="true">
-            <div class="widget-body">
-              <div id="params-host" aria-label="Parameter (klassisch)"></div>
-            </div>
-          </article>
-        </section>
+          <!-- VISUAL TOOLS (State Visuals + GridWave) -->
+          <section id="app-vt" data-widget="vt">
+            <section class="d2-visuals">
+              <!-- State Visuals -->
+              <article id="sv-widget" class="widget" data-widget-enabled="true">
+                <div class="widget-body">
+                  <div id="sv-host" class="square-host" aria-label="State Visuals"></div>
+                  <!-- optionaler Legacy-Host, falls alte Module ihn suchen -->
+                  <div id="vt-host" class="square-host" hidden></div>
+                </div>
+              </article>
 
-        <!-- PARAMS (Formeln) -->
-        <section id="app-formulas" data-widget="formulas">
-          <article id="params-formulas-widget" class="widget" data-widget-enabled="true"
-                   data-pt-compact="1"
-                   data-pt-flat="1"
-                   data-pt-show-sigma="auto"
-                   data-pt-order="D,R0,beta,gamma,sigma,beta_eff,R_eff_t,R_eff_0">
-            <div class="widget-body">
-              <div id="params-formulas-host" aria-label="Parameter (Formeln)"></div>
-            </div>
-          </article>
-        </section>
+              <!-- GridWave -->
+              <article id="gw-widget" class="widget" data-widget-enabled="true">
+                <div class="widget-body">
+                  <div id="gw-host" class="square-host" aria-label="GridWave">
+                    <div class="muted" id="gw-fallback" hidden>GridWave ist optional und derzeit nicht geladen</div>
+                  </div>
+                </div>
+              </article>
+            </section>
+          </section>
 
-        <!-- Key KPIs (statisch) -->
-        <section>
-          <article id="kpi-static-widget" class="widget" data-widget-enabled="true">
-            <div class="widget-body">
-              <div id="kpi-static" class="kpi-deck" aria-label="KPIs (static)"></div>
-            </div>
-          </article>
-        </section>
-      </div>
+          <!-- LEQ (Living Equation) -->
+          <section id="app-leq" data-widget="leq">
+            <article id="core-equation-widget" class="widget" data-widget-enabled="true">
+              <div class="widget-body">
+                <div id="core-equation" data-widget-id="core-equation"></div>
+              </div>
+            </article>
+          </section>
+        </div>
 
-    </main>
+        <!-- RECHTE SPALTE (Params klassisch → Formeln → Key KPIs) -->
+        <div class="d2-right">
+          <!-- PARAMS (klassisch) -->
+          <section id="app-params" data-widget="params">
+            <article id="params-widget" class="widget" data-widget-enabled="true">
+              <div class="widget-body">
+                <div id="params-host" aria-label="Parameter (klassisch)"></div>
+              </div>
+            </article>
+          </section>
+
+          <!-- PARAMS (Formeln) -->
+          <section id="app-formulas" data-widget="formulas">
+            <article
+              id="params-formulas-widget"
+              class="widget"
+              data-widget-enabled="true"
+              data-pt-compact="1"
+              data-pt-flat="1"
+              data-pt-show-sigma="auto"
+              data-pt-order="D,R0,beta,gamma,sigma,beta_eff,R_eff_t,R_eff_0"
+            >
+              <div class="widget-body">
+                <div id="params-formulas-host" aria-label="Parameter (Formeln)"></div>
+              </div>
+            </article>
+          </section>
+
+          <!-- Key KPIs (statisch) -->
+          <section>
+            <article id="kpi-static-widget" class="widget" data-widget-enabled="true">
+              <div class="widget-body">
+                <div id="kpi-static" class="kpi-deck" aria-label="KPIs (static)"></div>
+              </div>
+            </article>
+          </section>
+        </div>
+      </main>
+    </div>
 
     <noscript>Für die UID-Engine ist JavaScript erforderlich. Bitte JS aktivieren.</noscript>
 
