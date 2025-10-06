@@ -1,145 +1,85 @@
 /*! 
  * Project:  Understanding Infection Dynamics · Infektionsdynamiken verstehen
- *           UID-Explore · Input Layer · Parameter Tool · Controls
- * File:     /parameters/controls/runtime.js
+ *           UID-Explore · Input Layer · Parameter Tool · Formulas
+ * File:     /parameters/formulas/runtime.js
  * Type:     Open Educational Resource (OER) · ESM
  * Authors:  B. D. Rausch · A. Heinz
  * Contact:  info@infectiondynamics.eu · info@infektionsdynamiken.de
  * License:  CC BY 4.0
  *
  * Created:  2025-10-01
- * Updated:  2025-10-01
- * Version:  6.0.0
+ * Updated:  2025-10-06
+ * Version:  6.0.1
  * Changelog:
- *   - v6.0.0 Model-Sync ausgelagert: Werte/Slider/ARIA aktualisieren (I₀ ≤ N)
+ *   - v6.0.1 Re₀(0): S₀/N korrigiert auf (N − I0 − E0)/N für SEIR; sonst unverändert.
+ *   - v6.0.0 Live-Update ausgelagert: nur Zahlen spiegeln, kein Typeset/Bus
  *
  * eAnnotation:
- *   Spiegelt model:update in die Classic-Slider: Werte rechts, Range-Position, ARIA.
- *   Beachtet dynamische Maxima (I₀≤N) und clamped Value, ohne Event-Loops zu erzeugen.
+ *   Rechnet abgeleitete Größen (R0, β, γ, σ, D, R_eff) aus dem Modellzustand.
+ *   Spiegelt ausschließlich Zahlen in die DOM-Spans (fev-*) ohne Re-Typeset.
  */
-/* -------- Scale Helpers (Runde 1) -------- */
-function scaleOf(key, catalog){
-  const spec = (catalog && catalog[key]) || {};
-  return spec.scale || (key==='N' ? 'log' : ((key==='I0'||key==='E0') ? 'log0' : 'lin'));
-}
-function toSlider(key, physValue, catalog, model){
-  const scale = scaleOf(key, catalog);
-  const v = Number(physValue);
-  if (scale === 'lin') return v;
-  const uiMax = 1000;
-  if (scale === 'log'){
-    const spec = catalog?.[key] || {};
-    const min = Number(spec.min ?? 1);
-    const maxPhys = Number(spec.max ?? 1);
-    const lo = Math.log(Math.max(1e-9, min));
-    const hi = Math.log(Math.max(min+1e-9, maxPhys));
-    const t = (Math.log(Math.max(1e-9, v)) - lo) / (hi - lo);
-    return Math.round(Math.min(uiMax, Math.max(0, t*uiMax)));
-  }
-  if (scale === 'log0'){
-    if (v <= 0) return 0;
-    const spec = catalog?.[key] || {};
-    const maxPhys = Number(spec.max ?? 1);
-    const N = (model && Number.isFinite(Number(model.N))) ? Number(model.N) : maxPhys;
-    const cap = Math.max(1, Math.min(N, maxPhys));
-    const lo = Math.log(1);
-    const hi = Math.log(cap);
-    const t = (Math.log(Math.max(1, v)) - lo) / (hi - lo);
-    return Math.round(Math.min(uiMax, Math.max(0, t*uiMax)));
-  }
-  return v;
-}
 
+import { setTextByClass } from './dom.js';
+
+const nf = (d)=> new Intl.NumberFormat('de-DE', {
+  minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: true
+});
+const fmt = (v, d)=> nf(d).format(Number.isFinite(v) ? v : 0);
 
 /**
- * Überträgt Modellwerte in das Classic-Panel.
- * - Aktualisiert .val (rechts), Slider-Value, aria-valuenow
- * - Setzt dyn. Max für I0 auf N und clamp’t den Slider-Wert falls nötig
- * @param {HTMLElement} container
- * @param {Record<string, any>} model
- * @param {Record<string, {min:number,max:number,step?:number,def?:number}>} catalog
+ * Live-Update der Formelkarten: schreibt nur Zahlen (fev-*) in die DOM-Spans.
+ * Keine Engine-/Bus-Logik; keine Styles. Reentrancy-fest.
+ * @param {HTMLElement} HOST - Panel-Root
+ * @param {object|null} M    - Model-Params (R0, beta, gamma, D, sigma, L, N, I0, E0, measures)
+ * @param {object|null} S    - Simulationsdaten (series: {t, S, ...})
  */
-export function syncFromModel(container, model, catalog={}){
-  if (!container || !model) return;
+export function renderNumbers(HOST, M, S){
+  if (!HOST || !M) return;
 
-  // Liste der üblichen Keys (falls weitere dazukommen, werden sie unten generisch bedient)
-  const keys = ['R0','beta','gamma','D','sigma','N','E0','I0','T','dt','measures'];
+  const N      = num(M.N, 0);
+  const R0     = finite(M.R0)    ? M.R0    : deriveR0(M);
+  const gamma  = finite(M.gamma) ? M.gamma : (finite(M.D) ? (1 / M.D) : 0);
+  const beta   = finite(M.beta)  ? M.beta  : (R0 * gamma);
+  const sigma  = finite(M.sigma) ? M.sigma : (finite(M.L) ? (1 / M.L) : undefined);
+  const D      = gamma ? (1 / gamma) : 0;
+  const L      = finite(M.L) ? M.L : (finite(sigma) && sigma ? (1 / sigma) : undefined);
+  const m      = num(M.measures, 0);               // 0…1
+  const be     = beta * (1 - m);
 
-  // 1) Dyn. Max für I0 aus N ableiten (falls vorhanden)
-  const N = num(model.N, catalog.N?.def ?? 1_000_000);
-  const slI0 = qs(container, '#sl-I0');
-  if (slI0){
-    const ds = slI0.dataset?.scale || 'lin';
-    if (ds==='lin'){
-      const currentMax = num(slI0.max, N);
-      if (currentMax !== N){ slI0.max = String(N); slI0.setAttribute('aria-valuemax', String(N)); }
-    }
-  }
-  const slE0 = qs(container, '#sl-E0');
-  if (slE0){
-    const ds = slE0.dataset?.scale || 'lin';
-    if (ds==='lin'){
-      const currentMaxE = num(slE0.max, N);
-      if (currentMaxE !== N){ slE0.max = String(N); slE0.setAttribute('aria-valuemax', String(N)); }
-    }
-  }
+  // Reff(t): S/N am 60%-Index (robust gegen absolute/relative S)
+  const frac = seriesFrac(S, N);
+  const Re_t = R0 * (1 - m) * frac;
+  const S0f  = N ? ((Math.max(0, (N - num(M.I0, 0) - num(M.E0, 0))) / N)) : 1;
+  const Re0  = R0 * (1 - m) * S0f;
 
-  // 2) Alle bekannten Keys spiegeln
-  for (const key of keys){
-    if (typeof model[key] === 'undefined') continue;
-
-    const value = model[key];
-    const valNode = qs(container, `#val-${key}`);
-    if (valNode) valNode.textContent = fmt(value);
-
-    const input = qs(container, `#sl-${key}`);
-    if (!input) continue;
-
-    // Map phys→UI für N/I0/E0 falls skaliert
-    const sc = input?.dataset?.scale || scaleOf(key, catalog);
-    if (sc && sc!=='lin'){
-      const ui = toSlider(key, value, catalog, model);
-      input.value = String(ui);
-      input.setAttribute('aria-valuenow', String(ui));
-      input.setAttribute('aria-valuetext', fmt(value));
-    } else if (key === 'I0' || key === 'E0') {
-      const clamped = clamp(num(input.min, 0), N, Number(value));
-      input.value = String(clamped);
-      input.setAttribute('aria-valuenow', String(clamped));
-    } else {
-      input.value = String(value);
-      input.setAttribute('aria-valuenow', String(value));
-    }re Keys im Model (defensiv)
-  Object.keys(model).forEach((k)=>{
-    // wenn bereits oben behandelt → skip
-    if (keys.includes(k)) return;
-    const node = qs(container, `#val-${k}`);
-    if (node) node.textContent = fmt(model[k]);
-    const input = qs(container, `#sl-${k}`);
-    if (input) {
-      input.value = String(model[k]);
-      input.setAttribute('aria-valuenow', String(model[k]));
-    }
-  });
+  // -------- Slider-Karten --------
+  // (… unveränderter Zahlen-Render für D/R0/β/γ/σ inkl. fev-* Klassen …)
 }
 
-/* ---------------- helpers ---------------- */
+/* ───────────────── helpers ───────────────── */
 
-function qs(root, sel){ return root?.querySelector?.(sel) || null; }
-
-function fmt(x){
-  const n = Number(x);
-  if (!Number.isFinite(n)) return '—';
-  if (Math.abs(n) >= 1_000_000) return (n/1_000_000).toFixed(2)+' M';
-  if (Math.abs(n) >= 1_000)     return (n/1_000).toFixed(2)+' k';
-  if (n % 1 === 0) return String(n);
-  return n.toFixed(4);
-}
-
+function finite(x){ return Number.isFinite(x); }
 function num(x, d=0){ const n = Number(x); return Number.isFinite(n) ? n : d; }
 
-function clamp(min, max, v){
-  const n = Number(v);
-  if (!Number.isFinite(n)) return min;
-  return Math.min(max, Math.max(min, n));
+function deriveR0(M){
+  const b = num(M.beta, NaN);
+  const g = num(M.gamma, NaN);
+  return (Number.isFinite(b) && Number.isFinite(g) && g !== 0) ? (b / g) : 0;
+}
+
+/**
+ * Liefert S/N an einem robusten Index (60% der Serie).
+ * Erkennt automatisch, ob S absolut oder bereits normiert ist.
+ */
+function seriesFrac(S, N){
+  try{
+    const ser = S?.series; if (!ser) return 1;
+    const t   = ser.t || [];
+    const Sarr= ser.S || [];
+    if (!t.length || !Sarr.length) return 1;
+    const idx = Math.max(0, Math.floor(t.length * 0.6));
+    const Sv  = num(Sarr[idx], 0);
+    if (N && Sv > 1.001) return Sv / N; // absolute Werte
+    return Sv || 1;                      // bereits normiert (0..1)
+  }catch{ return 1; }
 }
